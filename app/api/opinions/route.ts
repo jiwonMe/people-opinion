@@ -12,7 +12,7 @@ export async function GET() {
     
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.SHEET_ID,
-      range: 'Opinions!A2:E',
+      range: 'A2:E',
     });
 
     const rows = response.data.values || [];
@@ -22,6 +22,7 @@ export async function GET() {
       name: row[1],
       opinion: row[2],
       createdAt: row[3],
+      metadata: JSON.parse(row[4]),
     }));
 
     return NextResponse.json(opinions);

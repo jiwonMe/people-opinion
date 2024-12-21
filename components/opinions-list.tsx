@@ -8,6 +8,12 @@ type Opinion = {
   name: string;
   opinion: string;
   createdAt: string;
+  metadata: {
+    gender: string;
+    age: string;
+    address: string;
+    maskedName: string;
+  };
 };
 
 export function OpinionsList() {
@@ -25,7 +31,7 @@ export function OpinionsList() {
         <Card key={opinion.id} className="p-4">
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <h3 className="font-semibold">{opinion.name}</h3>
+              <h3 className="font-semibold">{opinion.metadata.maskedName}</h3>
               <time className="text-sm text-muted-foreground">
                 {new Date(opinion.createdAt).toLocaleDateString()}
               </time>

@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { google } from 'googleapis';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: Request) {
   try {
     const data = await request.json();
@@ -18,6 +20,7 @@ export async function POST(request: Request) {
       data.opinion,
       new Date().toISOString(),
       JSON.stringify({
+        maskedName: data.maskedName,
         gender: data.gender,
         age: data.age,
         address: data.address,
@@ -26,7 +29,7 @@ export async function POST(request: Request) {
 
     await sheets.spreadsheets.values.append({
       spreadsheetId: process.env.SHEET_ID,
-      range: 'Opinions!A2:E',
+      range: 'A2:E',
       valueInputOption: 'RAW',
       requestBody: {
         values: [row],

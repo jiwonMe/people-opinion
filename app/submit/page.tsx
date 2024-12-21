@@ -7,6 +7,9 @@ import { ReviewForm } from '@/components/review-form';
 import { Card } from '@/components/ui/card';
 import { Steps } from '@/components/steps';
 
+// Add dynamic rendering configuration
+export const dynamic = 'force-dynamic';
+
 export default function SubmitPage() {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
