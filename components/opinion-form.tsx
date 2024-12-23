@@ -18,13 +18,15 @@ const formSchema = z.object({
   opinion: z.string().min(50, 'Opinion must be at least 50 characters'),
 });
 
-export function OpinionForm({ formData, setFormData, onBack, onNext }) {
+export type OpinionFormData = z.infer<typeof formSchema>;
+
+export function OpinionForm({ formData, setFormData, onBack, onNext }: { formData: OpinionFormData, setFormData: (data: OpinionFormData) => void, onBack: () => void, onNext: () => void }) {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: formData,
   });
 
-  function onSubmit(values) {
+  function onSubmit(values: OpinionFormData) {
     setFormData({ ...formData, ...values });
     onNext();
   }

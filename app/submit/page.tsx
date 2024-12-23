@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { UserForm } from '@/components/user-form';
-import { OpinionForm } from '@/components/opinion-form';
+import { UserForm, UserFormData } from '@/components/user-form';
+import { OpinionForm, OpinionFormData } from '@/components/opinion-form';
 import { ReviewForm } from '@/components/review-form';
 import { Card } from '@/components/ui/card';
 import { Steps } from '@/components/steps';
@@ -12,12 +12,13 @@ export const dynamic = 'force-dynamic';
 
 export default function SubmitPage() {
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<UserFormData & OpinionFormData>({
     name: '',
     gender: '',
-    age: '',
+    birth: '2000-01-01',
     address: '',
     opinion: '',
+    personalAgreement: false,
   });
 
   const steps = [
@@ -30,12 +31,15 @@ export default function SubmitPage() {
     <div className="min-h-screen bg-background py-8">
       <div className="container mx-auto px-4">
         <Card className="max-w-2xl mx-auto p-6">
-          <Steps steps={steps} currentStep={step} />
+          {/* <Steps steps={steps} currentStep={step} /> */}
           
           {step === 1 && (
             <UserForm
               formData={formData}
-              setFormData={setFormData}
+              setFormData={(data: UserFormData) => setFormData(prevState => ({
+                ...prevState,
+                ...data
+              }))}
               onNext={() => setStep(2)}
             />
           )}
@@ -43,7 +47,10 @@ export default function SubmitPage() {
           {step === 2 && (
             <OpinionForm
               formData={formData}
-              setFormData={setFormData}
+              setFormData={(data: OpinionFormData) => setFormData(prevState => ({
+                ...prevState,
+                ...data
+              }))}
               onBack={() => setStep(1)}
               onNext={() => setStep(3)}
             />

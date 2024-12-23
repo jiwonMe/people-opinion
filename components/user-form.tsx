@@ -20,21 +20,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Checkbox } from './ui/checkbox';
 
 const formSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
   gender: z.string().min(1, 'Please select your gender'),
-  age: z.string().regex(/^\d+$/, 'Age must be a number'),
+  birth: z.string().min(1, 'Please select your birth'),
   address: z.string().min(5, 'Address must be at least 5 characters'),
+  personalAgreement: z.boolean().refine((data) => data === true, {
+    message: '개인정보 수집 및 이용에 동의해야 합니다.',
+  }),
 });
 
-export function UserForm({ formData, setFormData, onNext }) {
+export type UserFormData = z.infer<typeof formSchema>;
+
+export function UserForm({ formData, setFormData, onNext }: { formData: UserFormData, setFormData: (data: UserFormData) => void, onNext: () => void }) {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: formData,
   });
 
-  function onSubmit(values) {
+  function onSubmit(values: UserFormData) {
     setFormData({ ...formData, ...values });
     onNext();
   }
@@ -47,9 +53,9 @@ export function UserForm({ formData, setFormData, onNext }) {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Full Name</FormLabel>
+              <FormLabel>이름</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your full name" {...field} />
+                <Input placeholder="이름을 입력해주세요" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -61,11 +67,11 @@ export function UserForm({ formData, setFormData, onNext }) {
           name="gender"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Gender</FormLabel>
+              <FormLabel>성별</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select your gender" />
+                    <SelectValue placeholder="성별을 선택해주세요" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -81,12 +87,13 @@ export function UserForm({ formData, setFormData, onNext }) {
 
         <FormField
           control={form.control}
-          name="age"
+          name="birth"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Age</FormLabel>
+              <FormLabel>생년월일</FormLabel>
               <FormControl>
-                <Input type="number" placeholder="Enter your age" {...field} />
+                <Input type="date" placeholder="생년월일을 입력해주세요"
+                {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -98,16 +105,37 @@ export function UserForm({ formData, setFormData, onNext }) {
           name="address"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Address</FormLabel>
+              <FormLabel>거주지</FormLabel>
               <FormControl>
-                <Input placeholder="Enter your address" {...field} />
+                <Input placeholder="주소를 입력해주세요 
+                (OO구/동까지만)" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <Button type="submit" className="w-full">Continue</Button>
+        <FormField
+          control={form.control}
+          name="personalAgreement"
+          render={({ field }) => (
+            <FormItem
+              className="flex items-center space-x-2"
+            >
+              <FormControl>
+                <Checkbox
+                checked={field.value}
+                onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <FormLabel>
+                <span className="text-sm text-muted-foreground">개인정보 수집 및 이용에 동의합니다.</span>
+              </FormLabel>
+            </FormItem>
+          )}
+        />
+
+        <Button type="submit" className="w-full">다음</Button>
       </form>
     </Form>
   );
