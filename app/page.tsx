@@ -10,7 +10,7 @@ import { VSpace } from '@/components/ui/vspace';
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center">
+    <main className="container mx-auto min-h-screen flex flex-col items-center justify-center max-h-screen">
       <div className="container mx-auto px-4 py-8 flex flex-col items-center justify-center flex-grow">
         <div className="relative h-full flex flex-col items-center justify-center">
           <VSpace size="40%" />
@@ -59,8 +59,8 @@ export default function Home() {
       <VSpace className="w-full flex flex-col items-center justify-start" size={60}>
         <Image src="/assets/images/valid-logo-white.svg" alt="전진하는 민주주의 VALID" width={62} height={28} />
       </VSpace>
-      <div className="absolute bottom-[-5%] left-[-20%] right-[-20%] -z-10 max-h-[500px]">
-        <Image src="/assets/images/home-bg.png" alt="헌법재판소" width={2000} height={500} />
+      <div className="fixed bottom-0 left-0 right-0 -z-10">
+        <Image className="absolute bottom-0 max-h-[500px] object-contain" src="/assets/images/home-bg.png" alt="헌법재판소" width={2000} height={500} />
       </div>
     </main>
   );
