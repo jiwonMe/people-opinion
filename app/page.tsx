@@ -46,6 +46,7 @@ export default function Home() {
         </div>
         <VSpace size={60} />
       </div>
+      <Image src="/assets/images/valid-logo-white.svg" alt="전진하는 민주주의 VALID" width={62} height={28} />
       <div id="cta-button-container" className={cn(
         "w-full px-4 py-8 flex flex-col items-center justify-center",
         // "bg-gradient-to-t from-white to-white/0",
@@ -56,9 +57,7 @@ export default function Home() {
           </CTAButton>
         </Link>
       </div>
-      <VSpace className="w-full flex flex-col items-center justify-start" size={60}>
-        <Image src="/assets/images/valid-logo-white.svg" alt="전진하는 민주주의 VALID" width={62} height={28} />
-      </VSpace>
+      <VSpace className="w-full flex flex-col items-center justify-start" size={60} />
       <div className="fixed bottom-0 left-0 right-0 -z-10">
         <Image className="absolute bottom-0 max-h-[500px] object-contain" src="/assets/images/home-bg.png" alt="헌법재판소" width={2000} height={500} />
       </div>

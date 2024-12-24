@@ -21,6 +21,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Checkbox } from './ui/checkbox';
+import { InputOTP, InputOTPGroup, InputOTPSlot } from './ui/input-otp';
+import { useEffect, useState } from 'react';
 
 const formSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -34,7 +36,7 @@ const formSchema = z.object({
 
 export type UserFormData = z.infer<typeof formSchema>;
 
-export function UserForm({ formData, setFormData, onNext }: { formData: UserFormData, setFormData: (data: UserFormData) => void, onNext: () => void }) {
+export function UserForm({ formData, setFormData, submitRef }: { formData: UserFormData, setFormData: (data: UserFormData) => void, submitRef: React.RefObject<HTMLButtonElement> }) {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: formData,
@@ -42,8 +44,15 @@ export function UserForm({ formData, setFormData, onNext }: { formData: UserForm
 
   function onSubmit(values: UserFormData) {
     setFormData({ ...formData, ...values });
-    onNext();
   }
+
+  useEffect(() => {
+    if (submitRef.current) {
+      submitRef.current.onclick = () => {
+        form.handleSubmit(onSubmit)
+      }
+    }
+  }, [formData]);
 
   return (
     <Form {...form}>
@@ -75,12 +84,30 @@ export function UserForm({ formData, setFormData, onNext }: { formData: UserForm
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="male">Male</SelectItem>
-                  <SelectItem value="female">Female</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
+                  <SelectItem value="secret">밝히지 않음</SelectItem>
+                  <SelectItem value="female">여성</SelectItem>
+                  <SelectItem value="male">남성</SelectItem>
+                  <SelectItem value="others">직접 작성</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
+              {
+                field.value.includes('others') && (
+              <FormControl>
+                <Input
+                  placeholder='직접 자신의 성별/젠더를 적어주세요'
+                  onChange={(event) => {
+                    field.onChange({
+                      ...event,
+                      target: {
+                        value: `others(${event.target.value})`
+                      }
+                    })
+                  }}
+                />
+              </FormControl>
+                )
+              }
             </FormItem>
           )}
         />
@@ -92,8 +119,29 @@ export function UserForm({ formData, setFormData, onNext }: { formData: UserForm
             <FormItem>
               <FormLabel>생년월일</FormLabel>
               <FormControl>
-                <Input type="date" placeholder="생년월일을 입력해주세요"
-                {...field} />
+                <InputOTP
+                  maxLength={8}
+                >
+                  <InputOTPGroup>
+                    <InputOTPSlot index={0}/>
+                    <InputOTPSlot index={1}/>
+                    <InputOTPSlot index={2}/>
+                    <InputOTPSlot index={3}/>
+                  </InputOTPGroup>
+                  년
+                  <InputOTPGroup>
+                    <InputOTPSlot index={4}/>
+                    <InputOTPSlot index={5}/>
+                  </InputOTPGroup>
+                  월
+                  <InputOTPGroup>
+                    <InputOTPSlot index={6}/>
+                    <InputOTPSlot index={7}/>
+                  </InputOTPGroup>
+                  일
+                </InputOTP>
+                {/* <Input type="date" placeholder="생년월일을 입력해주세요"
+                {...field} /> */}
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -134,8 +182,6 @@ export function UserForm({ formData, setFormData, onNext }: { formData: UserForm
             </FormItem>
           )}
         />
-
-        <Button type="submit" className="w-full">다음</Button>
       </form>
     </Form>
   );

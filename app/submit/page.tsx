@@ -1,17 +1,24 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { UserForm, UserFormData } from '@/components/user-form';
 import { OpinionForm, OpinionFormData } from '@/components/opinion-form';
 import { ReviewForm } from '@/components/review-form';
 import { Card } from '@/components/ui/card';
 import { Steps } from '@/components/steps';
+import Link from 'next/link';
+import { CTAButton } from '@/components/ui/cta-button';
+import { VSpace } from '@/components/ui/vspace';
+import { cn } from '@/lib/utils';
 
 // Add dynamic rendering configuration
 export const dynamic = 'force-dynamic';
 
 export default function SubmitPage() {
   const [step, setStep] = useState(1);
+
+  const submitRef = useRef<HTMLButtonElement>(null);
+
   const [formData, setFormData] = useState<UserFormData & OpinionFormData>({
     name: '',
     gender: '',
@@ -22,48 +29,76 @@ export default function SubmitPage() {
   });
 
   const steps = [
-    { id: 1, name: 'Personal Information' },
-    { id: 2, name: 'Your Opinion' },
-    { id: 3, name: 'Review & Submit' },
+    {
+      id: 1,
+      name: 'Personal Information',
+      instruction: '국민참여의견서를 작성하려면\n다음 정보들이 필요해요',
+      next: () => setStep(1)
+    },
+    {
+      id: 2,
+      name: 'Your Opinion',
+      instruction: '',
+      next: () => setStep(2)
+    },
+    {
+      id: 3,
+      name: 'Review & Submit',
+      instruction: '',
+      next: () => setStep(3)
+    },
   ];
 
   return (
-    <div className="min-h-screen bg-background py-8">
-      <div className="container mx-auto px-4">
-        <Card className="max-w-2xl mx-auto p-6">
-          {/* <Steps steps={steps} currentStep={step} /> */}
-          
-          {step === 1 && (
-            <UserForm
-              formData={formData}
-              setFormData={(data: UserFormData) => setFormData(prevState => ({
-                ...prevState,
-                ...data
-              }))}
-              onNext={() => setStep(2)}
-            />
-          )}
-          
-          {step === 2 && (
-            <OpinionForm
-              formData={formData}
-              setFormData={(data: OpinionFormData) => setFormData(prevState => ({
-                ...prevState,
-                ...data
-              }))}
-              onBack={() => setStep(1)}
-              onNext={() => setStep(3)}
-            />
-          )}
-          
-          {step === 3 && (
-            <ReviewForm
-              formData={formData}
-              onBack={() => setStep(2)}
-            />
-          )}
-        </Card>
+    <>
+    <VSpace className='h-10'></VSpace>
+    <div className='container mx-auto px-4 py-8 pt-14 flex flex-col flex-grow'>
+      <div>
+        {steps[step].instruction}
       </div>
+      {/* <Steps steps={steps} currentStep={step} /> */}
+      
+      {step === 1 && (
+        <UserForm
+          formData={formData}
+          setFormData={(data: UserFormData) => setFormData(prevState => ({
+            ...prevState,
+            ...data
+          }))}
+          submitRef={submitRef}
+        />
+      )}
+      
+      {step === 2 && (
+        <OpinionForm
+          formData={formData}
+          setFormData={(data: OpinionFormData) => setFormData(prevState => ({
+            ...prevState,
+            ...data
+          }))}
+          onBack={() => setStep(1)}
+          onNext={() => setStep(3)}
+        />
+      )}
+      
+      {step === 3 && (
+        <ReviewForm
+          formData={formData}
+          onBack={() => setStep(2)}
+        />
+      )}
+      
     </div>
+    <div id="cta-button-container" className={cn(
+      "w-full px-4 py-8 flex flex-col items-center justify-center",
+      // "bg-gradient-to-t from-white to-white/0",
+    )}>
+      <Link href="/submit" className="w-full flex">
+        <CTAButton ref={submitRef} onClick={() => steps[step].next()}>
+          다음
+        </CTAButton>
+      </Link>
+    </div>
+    </>
   );
 }
