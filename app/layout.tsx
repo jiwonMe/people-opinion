@@ -7,8 +7,8 @@ import { Toaster } from '@/components/ui/toaster';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Citizen Participation Portal',
-  description: 'Submit your opinions to the Constitutional Court',
+  title: '헌재로 보내자 - 우리가 원하는 미래를 쟁취하는 가장 빠르고 확실한 방법',
+  description: '윤석열 파면 헌법재판소 국민참여의견서 작성',
 };
 
 export default function RootLayout({
