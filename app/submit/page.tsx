@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react';
 import { personalInformationFormSchema, UserForm, UserFormData } from '@/components/user-form';
-import { OpinionForm, OpinionFormData } from '@/components/opinion-form';
+import { OpinionForm, OpinionFormData, yourOpinionFormSchema } from '@/components/opinion-form';
 import { ReviewForm } from '@/components/review-form';
 import Link from 'next/link';
 import { CTAButton } from '@/components/ui/cta-button';
@@ -15,12 +15,6 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 // Add dynamic rendering configuration
 export const dynamic = 'force-dynamic';
-
-
-
-const yourOpinionFormSchema = z.object({
-  opinion: z.string().min(10, 'Opinion must be at least 10 characters'),
-});
 
 const reviewSubmitFormSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -54,10 +48,10 @@ const funnelSteps = createFunnelSteps<StepContext>()
     requiredKeys: ['name', 'gender', 'birth', 'address', 'personalAgreement']
   })
   .extends('your-opinion', {
-    requiredKeys: ['opinion']
+    requiredKeys: ['wannabe', 'reason']
   })
   .extends('review-submit', {
-    requiredKeys: ['name', 'gender', 'birth', 'address', 'personalAgreement', 'opinion']
+    requiredKeys: ['name', 'gender', 'birth', 'address', 'personalAgreement', 'wannabe', 'reason']
   })
   .build();
 
@@ -79,53 +73,48 @@ export default function SubmitPage() {
     }
   } satisfies UseFunnelOptions<StepContextMap>);
 
-  const [step, setStep] = useState(1);
-
-  const userForm = useForm({
+  const userForm = useForm<UserFormData>({
     resolver: zodResolver(personalInformationFormSchema),
-    defaultValues: funnel.step === 'personal-information' ? funnel.context : undefined
+    defaultValues: funnel.context
   });
 
-  const opinionForm = useForm({
+  const opinionForm = useForm<OpinionFormData>({
     resolver: zodResolver(yourOpinionFormSchema),
-    defaultValues: funnel.step === 'your-opinion' ? funnel.context : undefined
+    defaultValues: funnel.context
   });
 
   const reviewForm = useForm({
     resolver: zodResolver(reviewSubmitFormSchema),
-    defaultValues: funnel.step === 'review-submit' ? {
-      ...funnel.context,
-      opinion: ''
-    } : undefined
+    defaultValues: funnel.context
   });
 
-  const steps = [
-    {
+  const steps = {
+    'personal-information': {
       id: 1,
       name: 'Personal Information',
       instruction: (<p>국민참여의견서를 작성하려면<br />다음 정보들이 필요해요</p>),
     },
-    {
+    'your-opinion': {
       id: 2,
       name: 'Your Opinion',
-      instruction: (<p>여러분이 원하는<br />세상은 어떤 모습인가요?</p>),
+      instruction: (<p>여러분이 원하는 미래와<br />윤석열의 탄핵 사유를 선택해주세요</p>),
     },
-    {
+    'review-submit': {
       id: 3,
       name: 'Review & Submit',
-      instruction: '',
+      instruction: (<p>작성한 내용을 검토하고<br />제출해주세요</p>),
     },
-  ];
+  }
 
   return (
     <>
     <VSpace className='h-10'></VSpace>
     <div className='container mx-auto px-4 py-8 pt-14 flex flex-col flex-grow'>
       <Link href="/" className='mb-4'>
-        <Image src="/assets/images/court-attack-logo.svg" alt="헌법재판소" width={100} height={100} />
+        <Image src="/assets/images/court-attack-logo.svg" alt="헌법재판소" width={150} height={100} />
       </Link>
       <div className='text-[21px] font-semibold leading-tight mb-4'>
-        {steps[step - 1].instruction}
+        {steps[funnel.step].instruction}
       </div>
       {/* <Steps steps={steps} currentStep={step} /> */}
 
@@ -136,17 +125,26 @@ export default function SubmitPage() {
           id={`${step}-form`}
           form={userForm}
           onSubmit={(values: UserFormData) => {
-            setStep(2);
             history.push('your-opinion', {
               ...context,
-              opinion: '',
+              ...values,
+              wannabe: '',
+              reason: '',
             });
           }}
           />
         )}}
-        your-opinion={({ context, history }) => {
+        your-opinion={({ context, history, step }) => {
           return (
-            <OpinionForm formData={context} setFormData={(data: OpinionFormData) => opinionForm.setValue('opinion', data.opinion)} onBack={() => setStep(1)} onNext={() => setStep(3)} />
+            <OpinionForm
+            id={`${step}-form`}
+            form={opinionForm}
+            onSubmit={(values: OpinionFormData) => {
+              history.push('review-submit', {
+                ...context,
+                ...values,
+              });
+            }} />
           )
         }}
         review-submit={({ context, history }) => {
@@ -161,14 +159,22 @@ export default function SubmitPage() {
       
     </div>
     <div id="cta-button-container" className={cn(
-      "w-full px-4 py-8 flex flex-col items-center justify-center",
+      "w-full px-4 py-8 flex items-center justify-center space-x-2",
       // "bg-gradient-to-t from-white to-white/0",
     )}>
-      {/* <Link href="/submit" className="w-full flex"> */}
-        <CTAButton type="submit" form={`${step}-form`}>
-          다음
-        </CTAButton>
-      {/* </Link> */}
+      {
+        funnel.step !== 'personal-information' && (
+          <CTAButton onClick={() => {
+            funnel.history.back();
+          }}
+          >
+            이전
+          </CTAButton>
+        )
+      }
+      <CTAButton type="submit" form={`${funnel.step}-form`}>
+        다음
+      </CTAButton>
     </div>
     </>
   );

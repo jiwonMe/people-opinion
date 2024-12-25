@@ -22,13 +22,25 @@ import {
 } from '@/components/ui/select';
 import { Checkbox } from './ui/checkbox';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from './ui/input-otp';
-import { useEffect, useState } from 'react';
 
 export const personalInformationFormSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  gender: z.string().min(1, 'Please select your gender'),
-  birth: z.string().min(1, 'Please select your birth'),
-  address: z.string().min(5, 'Address must be at least 5 characters'),
+  name: z.string().min(2, '이름은 최소 2글자 이상이어야 합니다.'),
+  gender: z.string().min(1, '성별을 선택해주세요'),
+  birth: z.string()
+    .length(6, '생년월일은 6자리여야 합니다')
+    .refine((val) => {
+      // Check if it's a valid date in YYMMDD format
+      const year = parseInt('20' + val.substring(0, 2));
+      const month = parseInt(val.substring(2, 4));
+      const day = parseInt(val.substring(4, 6));
+      
+      const date = new Date(year, month - 1, day);
+      return date instanceof Date && 
+             !isNaN(date.getTime()) &&
+             date.getMonth() === month - 1 &&
+             date.getDate() === day;
+    }, '올바른 생년월일을 입력해주세요'),
+  address: z.string().min(5, '주소는 최소 5글자 이상이어야 합니다.'),
   personalAgreement: z.boolean().refine((data) => data === true, {
     message: '개인정보 수집 및 이용에 동의해야 합니다.',
   }),
