@@ -64,7 +64,9 @@ export function UserForm({ formData, setFormData, submitRef }: { formData: UserF
             <FormItem>
               <FormLabel>이름</FormLabel>
               <FormControl>
-                <Input placeholder="이름을 입력해주세요" {...field} />
+                <Input placeholder="이름을 입력해주세요"
+                className='text-[16px]'
+                {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -96,6 +98,7 @@ export function UserForm({ formData, setFormData, submitRef }: { formData: UserF
               <FormControl>
                 <Input
                   placeholder='직접 자신의 성별/젠더를 적어주세요'
+                  className='text-[16px]'
                   onChange={(event) => {
                     field.onChange({
                       ...event,
@@ -117,28 +120,40 @@ export function UserForm({ formData, setFormData, submitRef }: { formData: UserF
           name="birth"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>생년월일</FormLabel>
+              <FormLabel>생년월일 6자리 (YYMMDD)</FormLabel>
               <FormControl>
                 <InputOTP
-                  maxLength={8}
+                  maxLength={6}
+                  onChange={(value) => {
+                    field.onChange(value)
+                  }}
                 >
                   <InputOTPGroup>
-                    <InputOTPSlot index={0}/>
-                    <InputOTPSlot index={1}/>
-                    <InputOTPSlot index={2}/>
-                    <InputOTPSlot index={3}/>
+                    <InputOTPSlot
+                    index={0}
+                    className='text-[16px]'
+                    />
+                    <InputOTPSlot
+                    index={1}
+                    className='text-[16px]'
+                    />
+                    <InputOTPSlot
+                    index={2}
+                    className='text-[16px]'
+                    />
+                    <InputOTPSlot
+                    index={3}
+                    className='text-[16px]'
+                    />
+                    <InputOTPSlot
+                    index={4}
+                    className='text-[16px]'
+                    />
+                    <InputOTPSlot
+                    index={5}
+                    className='text-[16px]'
+                    />
                   </InputOTPGroup>
-                  년
-                  <InputOTPGroup>
-                    <InputOTPSlot index={4}/>
-                    <InputOTPSlot index={5}/>
-                  </InputOTPGroup>
-                  월
-                  <InputOTPGroup>
-                    <InputOTPSlot index={6}/>
-                    <InputOTPSlot index={7}/>
-                  </InputOTPGroup>
-                  일
                 </InputOTP>
                 {/* <Input type="date" placeholder="생년월일을 입력해주세요"
                 {...field} /> */}
@@ -156,7 +171,9 @@ export function UserForm({ formData, setFormData, submitRef }: { formData: UserF
               <FormLabel>거주지</FormLabel>
               <FormControl>
                 <Input placeholder="주소를 입력해주세요 
-                (OO구/동까지만)" {...field} />
+                (OO구/동까지만)"
+                className='text-[16px]'
+                {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

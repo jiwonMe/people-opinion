@@ -32,7 +32,7 @@ export default function SubmitPage() {
     {
       id: 1,
       name: 'Personal Information',
-      instruction: '국민참여의견서를 작성하려면\n다음 정보들이 필요해요',
+      instruction: (<p>국민참여의견서를 작성하려면<br />다음 정보들이 필요해요</p>),
       next: () => setStep(1)
     },
     {
@@ -53,8 +53,8 @@ export default function SubmitPage() {
     <>
     <VSpace className='h-10'></VSpace>
     <div className='container mx-auto px-4 py-8 pt-14 flex flex-col flex-grow'>
-      <div>
-        {steps[step].instruction}
+      <div className='text-[21px] font-semibold leading-tight mb-4'>
+        {steps[step - 1].instruction}
       </div>
       {/* <Steps steps={steps} currentStep={step} /> */}
       
