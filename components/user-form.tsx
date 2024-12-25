@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { useForm, UseFormReturn } from 'react-hook-form';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import {
@@ -24,7 +24,7 @@ import { Checkbox } from './ui/checkbox';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from './ui/input-otp';
 import { useEffect, useState } from 'react';
 
-const formSchema = z.object({
+export const personalInformationFormSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
   gender: z.string().min(1, 'Please select your gender'),
   birth: z.string().min(1, 'Please select your birth'),
@@ -34,29 +34,14 @@ const formSchema = z.object({
   }),
 });
 
-export type UserFormData = z.infer<typeof formSchema>;
+export type UserFormData = z.infer<typeof personalInformationFormSchema>;
 
-export function UserForm({ formData, setFormData, submitRef }: { formData: UserFormData, setFormData: (data: UserFormData) => void, submitRef: React.RefObject<HTMLButtonElement> }) {
-  const form = useForm({
-    resolver: zodResolver(formSchema),
-    defaultValues: formData,
-  });
-
-  function onSubmit(values: UserFormData) {
-    setFormData({ ...formData, ...values });
-  }
-
-  useEffect(() => {
-    if (submitRef.current) {
-      submitRef.current.onclick = () => {
-        form.handleSubmit(onSubmit)
-      }
-    }
-  }, [formData]);
-
+export const UserForm = ({ form, onSubmit, id }: { form: UseFormReturn<UserFormData>, onSubmit: (values: UserFormData) => void, id: string }) => {
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form
+      id={id}
+      onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <FormField
           control={form.control}
           name="name"
@@ -127,6 +112,7 @@ export function UserForm({ formData, setFormData, submitRef }: { formData: UserF
                   onChange={(value) => {
                     field.onChange(value)
                   }}
+                  value={field.value}
                 >
                   <InputOTPGroup>
                     <InputOTPSlot
