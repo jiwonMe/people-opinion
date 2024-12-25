@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { CTAButton } from '@/components/ui/cta-button';
 import { VSpace } from '@/components/ui/vspace';
 import { cn } from '@/lib/utils';
-
+import Image from 'next/image';
 // Add dynamic rendering configuration
 export const dynamic = 'force-dynamic';
 
@@ -38,7 +38,7 @@ export default function SubmitPage() {
     {
       id: 2,
       name: 'Your Opinion',
-      instruction: '',
+      instruction: (<p>여러분이 원하는<br />세상은 어떤 모습인가요?</p>),
       next: () => setStep(2)
     },
     {
@@ -53,6 +53,9 @@ export default function SubmitPage() {
     <>
     <VSpace className='h-10'></VSpace>
     <div className='container mx-auto px-4 py-8 pt-14 flex flex-col flex-grow'>
+      <Link href="/" className='mb-4'>
+        <Image src="/assets/images/court-attack-logo.svg" alt="헌법재판소" width={100} height={100} />
+      </Link>
       <div className='text-[21px] font-semibold leading-tight mb-4'>
         {steps[step - 1].instruction}
       </div>

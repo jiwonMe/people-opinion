@@ -10,13 +10,9 @@ export default function SubmitLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="ko">
-      <body>
-        <main className="container mx-auto min-h-screen flex flex-col items-center justify-center max-h-screen">
-          {children}
-          <VSpace className="w-full flex flex-col items-center justify-start" size={60} />
-        </main>
-      </body>
-    </html>
+    <main className="container mx-auto min-h-screen flex flex-col items-center justify-center max-h-screen">
+      {children}
+      <VSpace className="w-full flex flex-col items-center justify-start" size={60} />
+    </main>
   )
 }
