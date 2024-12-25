@@ -13,6 +13,7 @@ import Image from 'next/image';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { ReviewGeneratedForm, ReviewGeneratedFormData, reviewGeneratedFormSchema } from '@/components/review-generated-form';
 // Add dynamic rendering configuration
 export const dynamic = 'force-dynamic';
 
@@ -33,13 +34,16 @@ type YourOpinion = z.infer<typeof yourOpinionFormSchema>;
 
 type ReviewSubmit = z.infer<typeof reviewSubmitFormSchema>;
 
+type ReviewGenerated = z.infer<typeof reviewGeneratedFormSchema>;
+
 type StepContextMap = {
   'personal-information': PersonalInformation,
   'your-opinion': YourOpinion,
-  'review-submit': ReviewSubmit
+  'review-submit': ReviewSubmit,
+  'review-generated': ReviewGenerated
 }
 
-type StepContext = Partial<PersonalInformation> & Partial<YourOpinion> & Partial<ReviewSubmit>;
+type StepContext = Partial<PersonalInformation> & Partial<YourOpinion> & Partial<ReviewSubmit> & Partial<ReviewGenerated>;
 
 
 
@@ -50,8 +54,11 @@ const funnelSteps = createFunnelSteps<StepContext>()
   .extends('your-opinion', {
     requiredKeys: ['wannabe', 'reason']
   })
+  .extends('review-generated', {
+    requiredKeys: ['opinion']
+  })
   .extends('review-submit', {
-    requiredKeys: ['name', 'gender', 'birth', 'address', 'personalAgreement', 'wannabe', 'reason']
+    requiredKeys: ['name', 'gender', 'birth', 'address', 'personalAgreement', 'wannabe', 'reason', 'opinion']
   })
   .build();
 
@@ -83,6 +90,11 @@ export default function SubmitPage() {
     defaultValues: funnel.context
   });
 
+  const reviewGeneratedForm = useForm<ReviewGeneratedFormData>({
+    resolver: zodResolver(reviewGeneratedFormSchema),
+    defaultValues: funnel.context
+  });
+
   const reviewForm = useForm({
     resolver: zodResolver(reviewSubmitFormSchema),
     defaultValues: funnel.context
@@ -99,8 +111,13 @@ export default function SubmitPage() {
       name: 'Your Opinion',
       instruction: (<p>여러분이 원하는 미래와<br />윤석열의 탄핵 사유를 선택해주세요</p>),
     },
-    'review-submit': {
+    'review-generated': {
       id: 3,
+      name: 'Review Generated',
+      instruction: (<p>생성된 내용을 검토하고<br />수정해주세요</p>),
+    },
+    'review-submit': {
+      id: 4,
       name: 'Review & Submit',
       instruction: (<p>작성한 내용을 검토하고<br />제출해주세요</p>),
     },
@@ -140,6 +157,21 @@ export default function SubmitPage() {
             id={`${step}-form`}
             form={opinionForm}
             onSubmit={(values: OpinionFormData) => {
+              console.log(values);
+              history.push('review-generated', {
+                ...context,
+                ...values,
+                opinion: `test: ${values.wannabe} ${values.reason}`,
+              });
+            }} />
+          )
+        }}
+        review-generated={({ context, history, step }) => {
+          return (
+            <ReviewGeneratedForm
+            id={`${step}-form`}
+            form={reviewGeneratedForm}
+            onSubmit={(values: ReviewGeneratedFormData) => {
               history.push('review-submit', {
                 ...context,
                 ...values,
