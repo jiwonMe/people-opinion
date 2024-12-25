@@ -167,6 +167,7 @@ export default function SubmitPage() {
           <CTAButton onClick={() => {
             funnel.history.back();
           }}
+          className='w-1/3 bg-[#EAECF1] hover:bg-[#EAECF1]/90 text-black rounded-[14px]'
           >
             이전
           </CTAButton>
