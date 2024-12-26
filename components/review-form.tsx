@@ -70,7 +70,7 @@ export function ReviewForm({ formData, onBack }: { formData: UserFormData & Opin
 
         <div>
           <h3 className="font-semibold">의견</h3>
-          <p className="mt-2 whitespace-pre-wrap">{formData.opinion}</p>
+          <p className="mt-2 whitespace-pre-wrap">{formData.wannabe + ' ' + formData.reason}</p>
         </div>
       </Card>
 
@@ -85,7 +85,7 @@ export function ReviewForm({ formData, onBack }: { formData: UserFormData & Opin
             onClick={() => {
               navigator.share({
                 title: 'My Opinion Submission',
-                text: formData.opinion,
+                text: formData.wannabe + ' ' + formData.reason,
                 url: window.location.href,
               }).catch(() => {
                 toast({
