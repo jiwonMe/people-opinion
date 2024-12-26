@@ -16,13 +16,14 @@ export const ReviewGeneratedForm = ({ form, onSubmit, id }: { form: UseFormRetur
     <Form {...form}>
       <form 
         id={id}
+        className="flex-grow"
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <FormField
           control={form.control}
           name="opinion"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="flex-grow flex flex-col">
               <FormLabel>의견</FormLabel>
               <FormControl>
                 <Textarea
@@ -30,7 +31,7 @@ export const ReviewGeneratedForm = ({ form, onSubmit, id }: { form: UseFormRetur
                   value={field.value}
                   defaultValue={field.value}
                   placeholder="의견을 입력해주세요"
-                  className="h-[200px]"
+                  className="h-[450px] resize-none flex-grow"
                 />
               </FormControl>
               <FormMessage />

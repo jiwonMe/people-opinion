@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { personalInformationFormSchema, UserForm, UserFormData } from '@/components/user-form';
 import { OpinionForm, OpinionFormData, yourOpinionFormSchema } from '@/components/opinion-form';
 import { ReviewForm } from '@/components/review-form';
@@ -14,6 +14,7 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ReviewGeneratedForm, ReviewGeneratedFormData, reviewGeneratedFormSchema } from '@/components/review-generated-form';
+import { generateOpinion } from '@/components/generateOpinion';
 // Add dynamic rendering configuration
 export const dynamic = 'force-dynamic';
 
@@ -64,6 +65,13 @@ const funnelSteps = createFunnelSteps<StepContext>()
 
 
 export default function SubmitPage() {
+
+  useEffect(() => {
+    window.addEventListener('beforeunload', function (event) {
+      event.returnValue = '';
+      return 'Are you sure you want to leave?';
+  });
+  }, []);
 
   const funnel = useFunnel({
     id: 'personal-information',
@@ -167,6 +175,9 @@ export default function SubmitPage() {
           )
         }}
         review-generated={({ context, history, step }) => {
+          generateOpinion(context.wannabe, context.reason, context.name, context.address, context.birth, context.gender)?.then((opinion) => {
+            reviewGeneratedForm.setValue('opinion', opinion);
+          });
           return (
             <ReviewGeneratedForm
             id={`${step}-form`}
