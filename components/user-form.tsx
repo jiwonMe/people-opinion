@@ -83,9 +83,9 @@ export const UserForm = ({ form, onSubmit, id }: { form: UseFormReturn<UserFormD
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="secret">밝히지 않음</SelectItem>
-                  <SelectItem value="female">여성</SelectItem>
-                  <SelectItem value="male">남성</SelectItem>
+                  <SelectItem value="밝히지 않음">밝히지 않음</SelectItem>
+                  <SelectItem value="여성">여성</SelectItem>
+                  <SelectItem value="남성">남성</SelectItem>
                   <SelectItem value="others">직접 작성</SelectItem>
                 </SelectContent>
               </Select>
@@ -94,7 +94,7 @@ export const UserForm = ({ form, onSubmit, id }: { form: UseFormReturn<UserFormD
                 field.value.includes('others') && (
               <FormControl>
                 <Input
-                  placeholder='직접 자신의 성별/젠더를 적어주세요'
+                  placeholder='성별/젠더를 적어주세요'
                   className='text-[16px]'
                   onChange={(event) => {
                     field.onChange({

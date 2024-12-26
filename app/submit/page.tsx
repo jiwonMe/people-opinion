@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { personalInformationFormSchema, UserForm, UserFormData } from '@/components/user-form';
 import { OpinionForm, OpinionFormData, yourOpinionFormSchema } from '@/components/opinion-form';
-import { ReviewForm } from '@/components/review-form';
+import { ReviewForm, ReviewSubmitFormData, reviewSubmitFormSchema } from '@/components/review-form';
 import Link from 'next/link';
 import { CTAButton } from '@/components/ui/cta-button';
 import { VSpace } from '@/components/ui/vspace';
@@ -18,15 +18,7 @@ import { generateOpinion } from '@/components/generateOpinion';
 // Add dynamic rendering configuration
 export const dynamic = 'force-dynamic';
 
-const reviewSubmitFormSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  gender: z.string().min(1, 'Please select your gender'),
-  birth: z.string().min(1, 'Please select your birth'),
-  address: z.string().min(5, 'Address must be at least 5 characters'),
-  personalAgreement: z.boolean().refine((data) => data === true, {
-    message: '개인정보 수집 및 이용에 동의해야 합니다.',
-  }),
-});
+
 
 
 type PersonalInformation = z.infer<typeof personalInformationFormSchema>;
@@ -40,8 +32,8 @@ type ReviewGenerated = z.infer<typeof reviewGeneratedFormSchema>;
 type StepContextMap = {
   'personal-information': PersonalInformation,
   'your-opinion': YourOpinion,
-  'review-submit': ReviewSubmit,
   'review-generated': ReviewGenerated
+  'review-submit': ReviewSubmit,
 }
 
 type StepContext = Partial<PersonalInformation> & Partial<YourOpinion> & Partial<ReviewSubmit> & Partial<ReviewGenerated>;
@@ -59,7 +51,7 @@ const funnelSteps = createFunnelSteps<StepContext>()
     requiredKeys: ['opinion']
   })
   .extends('review-submit', {
-    requiredKeys: ['name', 'gender', 'birth', 'address', 'personalAgreement', 'wannabe', 'reason', 'opinion']
+    requiredKeys: ['name', 'gender', 'birth', 'address', 'personalAgreement', 'opinion']
   })
   .build();
 
@@ -103,7 +95,7 @@ export default function SubmitPage() {
     defaultValues: funnel.context
   });
 
-  const reviewForm = useForm({
+  const reviewForm = useForm<ReviewSubmitFormData>({
     resolver: zodResolver(reviewSubmitFormSchema),
     defaultValues: funnel.context
   });
@@ -175,9 +167,6 @@ export default function SubmitPage() {
           )
         }}
         review-generated={({ context, history, step }) => {
-          generateOpinion(context.wannabe, context.reason, context.name, context.address, context.birth, context.gender)?.then((opinion) => {
-            reviewGeneratedForm.setValue('opinion', opinion);
-          });
           return (
             <ReviewGeneratedForm
             id={`${step}-form`}
@@ -187,14 +176,35 @@ export default function SubmitPage() {
                 ...context,
                 ...values,
               });
-            }} />
+            }}
+            context={context}
+            />
           )
         }}
-        review-submit={({ context, history }) => {
+        review-submit={({ context, history, step }) => {
           return (
-            <div>
-              {JSON.stringify(context)}
-            </div>
+            <ReviewForm
+            id={`${step}-form`}
+            form={reviewForm}
+            context={context}
+            onSubmit={async (values: ReviewSubmitFormData) => {
+              const response = await fetch('/api/submit', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(context),
+              });
+        
+              if (!response.ok) throw new Error('Submission failed');
+
+              // reset all forms
+              userForm.reset();
+              opinionForm.reset();
+              reviewGeneratedForm.reset();
+              reviewForm.reset();
+            }}
+            />
           )
         }}
       />

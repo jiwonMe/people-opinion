@@ -7,10 +7,12 @@ export async function POST(request: Request) {
     // Parse the request body to get the prompt
     const { id, name, address, birth, gender, wannabe, reason } = await request.json();
 
+    // birth: YYMMDD
+    const age = new Date().getFullYear() - parseInt(birth.slice(0, 2));
+
     const prompt = `- 다음 템플릿에서 [1. 내가 원하는 미래]와 [2. 탄핵 사유]에 들어가는 내용은 그대로 유지하고 (조사 등은 변경 가능) 템플릿의 나머지 내용은 기존 템플릿과 비슷한 어투로 [1. 내가 원하는 미래]와 [2. 탄핵 사유]에 알맞게 변경
 - 그 다음 문맥에 맞게 내용들을 수정 (1과 2가 서로 문맥상 잘 이어지도록 필요하다면 중간 내용 추가)
 - 내용은 500~1000자 정도
-- [1. 내가 원하는 미래]와 [2. 탄핵사유]에 해당하는 부분은 bold 처리
 - 결과물은 별다른 설명없이 글 내용만 출력
 
 ---
@@ -32,13 +34,13 @@ export async function POST(request: Request) {
 
 (2. 탄핵 사유와 관련한 대통령 윤석열 및 그 정권에 대한 규탄)
 
-부디 국민들의 불안과 걱정을 헤아리시고, 하루 빨리 탄핵을 인용하여 법과 정의의 이름으로  민주주의를 바로 세워주시길 강력히 촉구합니다.
+('부디 국민들의 불안과 걱정을 헤아리시고, 하루 빨리 탄핵을 인용하여 법과 정의의 이름으로 민주주의를 바로 세워주시길 강력히 촉구합니다.' 와 같은 마무리 문구 추가)
 ---
-[거주지]
+[거주지] (구/동 단위까지)
 ${address}
 
-[생년월일]
-${birth}
+[나이]
+${age}
 
 [이름]
 ${name}

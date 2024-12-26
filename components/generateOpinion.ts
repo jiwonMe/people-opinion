@@ -6,8 +6,7 @@ import { debounce } from 'lodash';
  * @param reason 탄핵 사유
  * @returns 의견
  */
-export const generateOpinion = debounce(
-  async (
+export const generateOpinion = async (
     wannabe: string,
     reason: string,
     name: string,
@@ -22,6 +21,4 @@ export const generateOpinion = debounce(
 
     const data = await response.json();
     return data.response;
-  },
-  3000 // 3000ms delay
-);
+  }
