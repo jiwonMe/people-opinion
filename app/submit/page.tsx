@@ -15,7 +15,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ReviewGeneratedForm, ReviewGeneratedFormData, reviewGeneratedFormSchema } from '@/components/review-generated-form';
 import { generateOpinion } from '@/components/generateOpinion';
-import { ToastProvider } from '@/components/ui/toast';
+import { Toast, ToastProvider } from '@/components/ui/toast';
+import { Toaster } from '@/components/ui/toaster';
 // Add dynamic rendering configuration
 export const dynamic = 'force-dynamic';
 
@@ -126,7 +127,7 @@ export default function SubmitPage() {
 
   return (
     <>
-    <ToastProvider> 
+    <Toaster /> 
     <VSpace className='h-10'></VSpace>
     <div className='container mx-auto px-4 py-8 pt-14 flex flex-col flex-grow'>
       <Link href="/" className='mb-4'>
@@ -199,6 +200,7 @@ export default function SubmitPage() {
               });
         
               if (!response.ok) throw new Error('Submission failed');
+              return response.json();
             }}
             />
           )
@@ -226,7 +228,6 @@ export default function SubmitPage() {
         {funnel.step === 'review-submit' ? '제출' : '다음'}
       </CTAButton>
     </div>
-    </ToastProvider>
     </>
   );
 }

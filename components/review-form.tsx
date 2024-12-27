@@ -25,24 +25,24 @@ export const reviewSubmitFormSchema = z.object({
 
 export type ReviewSubmitFormData = z.infer<typeof reviewSubmitFormSchema>;
 
-export function ReviewForm({ form, onSubmit, id, context }: { form: UseFormReturn<ReviewSubmitFormData>, onSubmit: (values: ReviewSubmitFormData) => void, id: string, context: ReviewSubmitFormData }) {
-  const navigate = useRouter();
+export function ReviewForm({ form, onSubmit, id, context }: { form: UseFormReturn<ReviewSubmitFormData>, onSubmit: (values: ReviewSubmitFormData) => Promise<void>, id: string, context: ReviewSubmitFormData }) {
+  const router = useRouter();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  async function _onSubmit() {
+  async function _onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     setIsSubmitting(true);
     try {
       const values = form.getValues();
-      await onSubmit(values);
-      toast({
-        title: '제출 완료!',
-        description: '제출이 완료되었습니다.',
+      onSubmit(values).then(() => {
+        toast({
+          title: '제출 완료!',
+          description: '제출이 완료되었습니다.',
+        });
+        router.push('/');
       });
-
-      // Reset form or redirect
-      navigate.push('/');
     } catch (error) {
       toast({
         title: '제출 실패',
@@ -87,7 +87,7 @@ export function ReviewForm({ form, onSubmit, id, context }: { form: UseFormRetur
         </div>
       </ScrollArea>
       <form id={id} onSubmit={_onSubmit}>
-        
+        <input type="hidden" name="url" value={window.location.href} />
       </form>
 
       <div className="flex justify-between">
