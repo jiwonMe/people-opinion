@@ -1,9 +1,7 @@
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, UseFormReturn } from 'react-hook-form';
+import { UseFormReturn } from 'react-hook-form';
 import * as z from 'zod';
-import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -52,15 +50,9 @@ const shuffleOptions = (options: { value: string; text: string }[]) => {
 
 export const yourOpinionFormSchema = z.object({
   wannabe: z.string()
-    .nonempty('원하는 미래를 선택해주세요')
-    .refine((value) => value !== `${OTHER}()`, {
-      message: '원하는 미래를 작성해주세요',
-    }),
+    .nonempty('원하는 미래를 선택해주세요'),
   reason: z.string()
     .nonempty('탄핵 사유를 선택해주세요')
-    .refine((value) => value !== `${OTHER}()`, {
-      message: '탄핵 사유를 작성해주세요',
-    }),
 });
 
 export type OpinionFormData = z.infer<typeof yourOpinionFormSchema>;
@@ -87,7 +79,7 @@ export const OpinionForm = ({ form, onSubmit, id }: { form: UseFormReturn<Opinio
           render={({ field }) => (
             <FormItem>
               <FormLabel>원하는 미래</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="원하는 미래를 선택해주세요" />
@@ -106,12 +98,7 @@ export const OpinionForm = ({ form, onSubmit, id }: { form: UseFormReturn<Opinio
                       placeholder='원하는 미래를 적어주세요'
                       className='text-[16px]'
                       onChange={(event) => {
-                        field.onChange({
-                          ...event,
-                          target: {
-                            value: `${OTHER}(${event.target.value})`
-                          }
-                        })
+                        field.onChange(`${OTHER}(${event.target.value})`);
                       }}
                     />
                   </FormControl>
@@ -127,7 +114,7 @@ export const OpinionForm = ({ form, onSubmit, id }: { form: UseFormReturn<Opinio
           render={({ field }) => (
             <FormItem>
               <FormLabel>탄핵 사유</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="탄핵 사유를 선택해주세요" />
@@ -146,12 +133,7 @@ export const OpinionForm = ({ form, onSubmit, id }: { form: UseFormReturn<Opinio
                       placeholder='탄핵 사유를 적어주세요'
                       className='text-[16px]'
                       onChange={(event) => {
-                        field.onChange({
-                          ...event,
-                          target: {
-                            value: `${OTHER}(${event.target.value})`
-                          }
-                        })
+                        field.onChange(`${OTHER}(${event.target.value})`);
                       }}
                     />
                   </FormControl>

@@ -7,8 +7,24 @@ export async function POST(request: Request) {
     // Parse the request body to get the prompt
     const { id, name, address, birth, gender, wannabe, reason } = await request.json();
 
-    // birth: YYMMDD
-    const age = new Date().getFullYear() - parseInt(birth.slice(0, 2));
+    // Calculate age from birth date in YYMMDD format
+    const birthYear = parseInt(birth.slice(0, 2), 10);
+    const birthMonth = parseInt(birth.slice(2, 4), 10);
+    const birthDay = parseInt(birth.slice(4, 6), 10);
+
+    // Determine the full birth year
+    const currentYear = new Date().getFullYear();
+    const fullBirthYear = birthYear + (birthYear <= currentYear % 100 ? 2000 : 1900);
+
+    // Calculate age
+    const today = new Date();
+    let age = today.getFullYear() - fullBirthYear;
+    if (
+      today.getMonth() + 1 < birthMonth ||
+      (today.getMonth() + 1 === birthMonth && today.getDate() < birthDay)
+    ) {
+      age--;
+    }
 
     const prompt = `- 다음 템플릿에서 [1. 내가 원하는 미래]와 [2. 탄핵 사유]에 들어가는 내용은 그대로 유지하고 (조사 등은 변경 가능) 템플릿의 나머지 내용은 기존 템플릿과 비슷한 어투로 [1. 내가 원하는 미래]와 [2. 탄핵 사유]에 알맞게 변경
 - 그 다음 문맥에 맞게 내용들을 수정 (1과 2가 서로 문맥상 잘 이어지도록 필요하다면 중간 내용 추가)
@@ -59,7 +75,7 @@ ${reason}
 
     // Send the prompt to OpenAI and get the response
     const response = await openAI.chat.completions.create({
-      model: 'gpt-4o', // Specify the model to use
+      model: 'gpt-4o-mini', // Specify the model to use
       messages: [{ role: 'user', content: prompt }],
       max_tokens: 3000, // Limit the response length
     });

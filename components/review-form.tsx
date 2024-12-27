@@ -9,6 +9,8 @@ import { UserFormData } from './user-form';
 import { OpinionFormData } from './opinion-form';
 import { UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
+import { ScrollArea } from './ui/scroll-area';
+import { useRouter } from 'next/navigation';
 
 export const reviewSubmitFormSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -24,6 +26,8 @@ export const reviewSubmitFormSchema = z.object({
 export type ReviewSubmitFormData = z.infer<typeof reviewSubmitFormSchema>;
 
 export function ReviewForm({ form, onSubmit, id, context }: { form: UseFormReturn<ReviewSubmitFormData>, onSubmit: (values: ReviewSubmitFormData) => void, id: string, context: ReviewSubmitFormData }) {
+  const navigate = useRouter();
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
@@ -38,7 +42,7 @@ export function ReviewForm({ form, onSubmit, id, context }: { form: UseFormRetur
       });
 
       // Reset form or redirect
-      window.location.href = '/';
+      navigate.push('/');
     } catch (error) {
       toast({
         title: '제출 실패',
@@ -51,9 +55,10 @@ export function ReviewForm({ form, onSubmit, id, context }: { form: UseFormRetur
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 flex flex-col">
+      <ScrollArea className="flex-1">
         <div>
-          <h3 className="font-semibold">개인정보</h3>
+          <h3 className="font-semibold">제출 정보</h3>
           <div className="grid grid-cols-2 gap-4 mt-2">
             <div>
               <span className="text-sm text-muted-foreground">이름</span>
@@ -76,8 +81,11 @@ export function ReviewForm({ form, onSubmit, id, context }: { form: UseFormRetur
 
         <div>
           <h3 className="font-semibold">의견</h3>
-          <p className="mt-2 whitespace-pre-wrap">{context.opinion}</p>
+          <ScrollArea className="mt-2 max-h-40 overflow-y-auto">
+            <p className="whitespace-pre-wrap">{context.opinion}</p>
+          </ScrollArea>
         </div>
+      </ScrollArea>
       <form id={id} onSubmit={_onSubmit}>
         
       </form>
