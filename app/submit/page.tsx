@@ -53,7 +53,7 @@ const funnelSteps = createFunnelSteps<StepContext>()
     requiredKeys: ['opinion']
   })
   .extends('review-submit', {
-    requiredKeys: ['name', 'gender', 'birth', 'address', 'personalAgreement', 'opinion']
+    requiredKeys: ['name', 'gender', 'birth', 'address','wannabe', 'reason', 'personalAgreement', 'opinion']
   })
   .build();
 

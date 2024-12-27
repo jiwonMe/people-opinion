@@ -17,19 +17,19 @@ export async function POST(request: Request) {
     const row = [
       crypto.randomUUID(),
       data.name,
+      data.wannabe,
+      data.reason,
       data.opinion,
       new Date().toISOString(),
-      JSON.stringify({
-        maskedName: data.maskedName,
-        gender: data.gender,
-        age: data.age,
-        address: data.address,
-      }),
+      data.maskedName,
+      data.gender,
+      data.age,
+      data.address,
     ];
 
     await sheets.spreadsheets.values.append({
       spreadsheetId: process.env.SHEET_ID,
-      range: 'A2:E',
+      range: 'A2:J',
       valueInputOption: 'RAW',
       requestBody: {
         values: [row],
