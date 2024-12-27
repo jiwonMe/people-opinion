@@ -18,6 +18,8 @@ export const reviewSubmitFormSchema = z.object({
   birth: z.string().min(1, 'Please select your birth'),
   address: z.string().min(5, 'Address must be at least 5 characters'),
   opinion: z.string().min(50, '의견은 최소 50자 이상이어야 합니다.'),
+  wannabe: z.string().min(50, '원하는 세상은 최소 50자 이상이어야 합니다.'),
+  reason: z.string().min(50, '원하는 이유는 최소 50자 이상이어야 합니다.'),
   personalAgreement: z.boolean().refine((data) => data === true, {
     message: '개인정보 수집 및 이용에 동의해야 합니다.',
   }),
@@ -97,8 +99,8 @@ export function ReviewForm({ form, onSubmit, id, context }: { form: UseFormRetur
             variant="outline"
             onClick={() => {
               navigator.share({
-                title: 'My Opinion Submission',
-                text: context.opinion,
+                title: '헌재로 보내자! - 국민참여의견서 제출하기',
+                text: `헌재로 보내자! - 국민참여의견서 제출하기\n\n제가 원하는 세상은\n[${context.wannabe}]\n이고,\n\n윤석열은\n[${context.reason}]\n탄핵되어야합니다.\n\n 함께 헌재로 갑시다!\n\nhttps://attack.valid.or.kr`,
                 url: window.location.href,
               }).catch(() => {
                 toast({
