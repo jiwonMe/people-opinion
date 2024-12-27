@@ -21,9 +21,9 @@ export async function POST(request: Request) {
       data.reason,
       data.opinion,
       new Date().toISOString(),
-      data.maskedName,
+      data.name.slice(0, 1) + '**',
       data.gender,
-      data.age,
+      data.birth,
       data.address,
     ];
 
