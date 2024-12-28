@@ -116,7 +116,7 @@ export default function SubmitPage() {
     'review-generated': {
       id: 3,
       name: 'Review Generated',
-      instruction: (<p>생성된 내용을 검토하고<br />수정해주세요</p>),
+      instruction: (<p>생성된 초안을 검토하고<br />수정해주세요</p>),
     },
     'review-submit': {
       id: 4,

@@ -2,10 +2,11 @@
 
 import { useForm, UseFormReturn } from 'react-hook-form';
 import * as z from 'zod';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from './ui/form';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from './ui/form';
 import { Textarea } from './ui/textarea';
 import { useEffect, useState } from 'react';
 import { generateOpinion } from './generateOpinion';
+import { cn } from '@/lib/utils';
 
 export const reviewGeneratedFormSchema = z.object({
   opinion: z.string().min(50, '의견은 최소 50자 이상이어야 합니다.'),
@@ -26,8 +27,17 @@ export const ReviewGeneratedForm = ({ form, onSubmit, id, context }: { form: Use
 
   const [status, setStatus] = useState<'IDLE' | 'LOADING' | 'SUCCESS' | 'ERROR'>('IDLE');
 
-
   useEffect(() => {
+    const savedOpinion = localStorage.getItem('opinion');
+    if (savedOpinion) {
+      const useSaved = window.confirm('이전에 작성하던 내용을 불러오시겠습니까?');
+      if (useSaved) {
+        form.setValue('opinion', savedOpinion);
+        setStatus('SUCCESS');
+        return;
+      }
+    }
+
     try {
       setStatus('LOADING');
       (async () => {
@@ -40,9 +50,16 @@ export const ReviewGeneratedForm = ({ form, onSubmit, id, context }: { form: Use
     }
   }, []);
 
+  useEffect(() => {
+    const subscription = form.watch((value) => {
+      localStorage.setItem('opinion', value.opinion || '');
+    });
+    return () => subscription.unsubscribe();
+  }, [form]);
+
   if (status === 'LOADING' || status === 'IDLE') {
     return (
-      <div className="flex items-center justify-center h-full">
+      <div className="flex min-h-[100px] items-center justify-center h-full">
         {/* Loading spinner */}
         <svg
           className="animate-spin h-5 w-5 mr-3 text-gray-500"
@@ -64,7 +81,7 @@ export const ReviewGeneratedForm = ({ form, onSubmit, id, context }: { form: Use
             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
           ></path>
         </svg>
-        의견서를 생성하고 있어요
+        의견서 초안을 생성하고 있어요
       </div>
     );
   }
@@ -86,9 +103,23 @@ export const ReviewGeneratedForm = ({ form, onSubmit, id, context }: { form: Use
                 <Textarea
                   {...field}
                   placeholder="의견을 입력해주세요"
-                  className="h-[450px] resize-none flex-grow text-[16px]"
+                  className={cn(
+                    // Set minimum height to 300px
+                    "min-h-[300px]",
+                    // Allow textarea to grow to fill available space
+                    "flex-grow",
+                    // Set text size and alignment
+                    "text-[16px] text-left",
+                    // Prevent text from breaking
+                    "break-keep",
+                    // Allow resizing only vertically
+                    "resize-y",
+                  )}
                 />
               </FormControl>
+              <FormDescription className="text-right">
+                {field.value.length}자 / 1500자
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}

@@ -11,6 +11,9 @@ import { UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
 import { ScrollArea } from './ui/scroll-area';
 import { useRouter } from 'next/navigation';
+import { Drawer, DrawerContent } from '@/components/ui/drawer';
+import { cn } from '@/lib/utils';
+import { CTAButton } from './ui/cta-button';
 
 export const reviewSubmitFormSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -32,19 +35,20 @@ export function ReviewForm({ form, onSubmit, id, context }: { form: UseFormRetur
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   async function _onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsSubmitting(true);
     try {
       const values = form.getValues();
-      onSubmit(values).then(() => {
-        toast({
-          title: '제출 완료!',
-          description: '제출이 완료되었습니다.',
-        });
-        router.push('/');
+      await onSubmit(values);
+      sessionStorage.setItem('submissionStatus', 'completed');
+      toast({
+        title: '제출 완료!',
+        description: '제출이 완료되었습니다.',
       });
+      // setIsDrawerOpen(true);
     } catch (error) {
       toast({
         title: '제출 실패',
@@ -114,6 +118,67 @@ export function ReviewForm({ form, onSubmit, id, context }: { form: UseFormRetur
           </Button>
         </div>
       </div>
+
+      {/* <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
+        <DrawerContent 
+          className={cn(
+            "w-full", 
+            "max-w-lg"
+          )}
+        >
+          <div 
+            className={cn(
+              "p-4", 
+              "h-full", 
+              "flex", 
+              "flex-col", 
+              "justify-center"
+            )}
+          >
+            <h2 
+              className={cn(
+                "text-lg", 
+                "font-bold"
+              )}
+            >
+              제출 완료
+            </h2>
+            <p 
+              className={cn(
+                "text-sm", 
+                "text-muted-foreground"
+              )}
+            >
+              제출이 완료되었습니다. 함께 해주셔서 감사합니다.
+            </p>
+            <p 
+              className={cn(
+                "text-sm", 
+                "text-muted-foreground"
+              )}
+            >
+              이후 제출 내용은 헌재로 전달됩니다.
+            </p>
+            <p 
+              className={cn(
+                "text-sm", 
+                "text-muted-foreground"
+              )}
+            >
+              자세한 내용은 @valid.kr에서 확인해주세요.
+            </p>
+            <CTAButton
+              onClick={() => {
+                setIsDrawerOpen(false);
+                router.push('/');
+              }}
+              className="w-full"
+            >
+              확인
+            </CTAButton>
+          </div>
+        </DrawerContent>
+      </Drawer> */}
     </div>
   );
 }

@@ -8,7 +8,19 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: '헌재로 보내자 - 우리가 원하는 미래를 쟁취하는 가장 빠르고 확실한 방법',
-  description: '윤석열 파면 헌법재판소 국민참여의견서 작성',
+  description: '윤석열 탄핵심판 국민참여의견서 작성',
+  openGraph: {
+    images: [
+      {
+        url: '/assets/images/og-image.png',
+      },
+    ],
+    locale: 'ko_KR',
+    type: 'website',
+    siteName: '헌재로 보내자',
+    title: '헌재로 보내자 - 우리가 원하는 미래를 쟁취하는 가장 빠르고 확실한 방법',
+    description: '윤석열 탄핵심판 국민참여의견서 작성',
+  },
 };
 
 export default function RootLayout({
