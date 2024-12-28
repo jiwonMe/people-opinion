@@ -11,6 +11,12 @@ import { VSpace } from '@/components/ui/vspace';
 export default function Home() {
   return (
     <main className="container mx-auto min-h-screen flex flex-col items-center justify-center max-h-screen">
+      <div className={cn(
+        "fixed top-0 left-0 right-0",
+        "bg-black text-white text-sm text-center py-2"
+      )}>
+        개발중인 사이트로 현재 작성된 데이터는 실제 반영되지 않습니다
+      </div>
       <div className="container mx-auto px-4 py-8 flex flex-col items-center justify-center flex-grow">
         <div className="relative h-full flex flex-col items-center justify-center">
           <VSpace size="40%" />
