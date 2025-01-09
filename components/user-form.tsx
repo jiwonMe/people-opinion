@@ -41,6 +41,12 @@ export const personalInformationFormSchema = z.object({
              date.getDate() === day;
     }, '올바른 생년월일을 입력해주세요'),
   address: z.string().min(5, '주소는 최소 5글자 이상이어야 합니다.'),
+  phone: z.string().min(10, '전화번호는 최소 10자리 이상이어야 합니다.').refine((val) => {
+    return /^\d{10}$/.test(val);
+  }, '전화번호는 숫자만 입력해주세요'),
+  email: z.string().email('올바른 이메일 주소를 입력해주세요').refine((val) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+  }, '올바른 이메일 주소를 입력해주세요'),
   personalAgreement: z.boolean().refine((data) => data === true, {
     message: '개인정보 수집 및 이용에 동의해야 합니다.',
   }),
@@ -49,6 +55,10 @@ export const personalInformationFormSchema = z.object({
 export type UserFormData = z.infer<typeof personalInformationFormSchema>;
 
 export const UserForm = ({ form, onSubmit, id }: { form: UseFormReturn<UserFormData>, onSubmit: (values: UserFormData) => void, id: string }) => {
+  const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+    event.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
   return (
     <Form {...form}>
       <form
@@ -61,9 +71,12 @@ export const UserForm = ({ form, onSubmit, id }: { form: UseFormReturn<UserFormD
             <FormItem>
               <FormLabel>이름</FormLabel>
               <FormControl>
-                <Input placeholder="이름을 입력해주세요"
-                className='text-[16px]'
-                {...field} />
+                <Input
+                  placeholder="이름을 입력해주세요"
+                  className='text-[16px]'
+                  onFocus={handleFocus}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -96,6 +109,7 @@ export const UserForm = ({ form, onSubmit, id }: { form: UseFormReturn<UserFormD
                 <Input
                   placeholder='성별/젠더를 적어주세요'
                   className='text-[16px]'
+                  onFocus={handleFocus}
                   onChange={(event) => {
                     field.onChange({
                       ...event,
@@ -125,6 +139,7 @@ export const UserForm = ({ form, onSubmit, id }: { form: UseFormReturn<UserFormD
                     field.onChange(value)
                   }}
                   value={field.value}
+                  onFocus={handleFocus}
                 >
                   <InputOTPGroup>
                     <InputOTPSlot
@@ -163,15 +178,56 @@ export const UserForm = ({ form, onSubmit, id }: { form: UseFormReturn<UserFormD
 
         <FormField
           control={form.control}
+          name="phone"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>전화번호</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="전화번호를 입력해주세요"
+                  className='text-[16px]'
+                  onFocus={handleFocus}
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>이메일</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="이메일을 입력해주세요"
+                  className='text-[16px]'
+                  onFocus={handleFocus}
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name="address"
           render={({ field }) => (
             <FormItem>
               <FormLabel>거주지</FormLabel>
               <FormControl>
-                <Input placeholder="주소를 입력해주세요 
-                (OO구/동까지만)"
-                className='text-[16px]'
-                {...field} />
+                <Input
+                  placeholder="주소를 입력해주세요 
+                  (OO구/동까지만)"
+                  className='text-[16px]'
+                  onFocus={handleFocus}
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

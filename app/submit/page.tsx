@@ -17,6 +17,7 @@ import { ReviewGeneratedForm, ReviewGeneratedFormData, reviewGeneratedFormSchema
 import { generateOpinion } from '@/components/generateOpinion';
 import { Toast, ToastProvider } from '@/components/ui/toast';
 import { Toaster } from '@/components/ui/toaster';
+import { ScrollArea } from '@/components/ui/scroll-area';
 // Add dynamic rendering configuration
 export const dynamic = 'force-dynamic';
 
@@ -44,7 +45,7 @@ type StepContext = Partial<PersonalInformation> & Partial<YourOpinion> & Partial
 
 const funnelSteps = createFunnelSteps<StepContext>()
   .extends('personal-information', {
-    requiredKeys: ['name', 'gender', 'birth', 'address', 'personalAgreement']
+    requiredKeys: ['name', 'gender', 'birth', 'address', 'personalAgreement', 'phone', 'email']
   })
   .extends('your-opinion', {
     requiredKeys: ['wannabe', 'reason']
@@ -53,7 +54,7 @@ const funnelSteps = createFunnelSteps<StepContext>()
     requiredKeys: ['opinion']
   })
   .extends('review-submit', {
-    requiredKeys: ['name', 'gender', 'birth', 'address','wannabe', 'reason', 'personalAgreement', 'opinion']
+    requiredKeys: ['name', 'gender', 'birth', 'address','wannabe', 'reason', 'personalAgreement', 'opinion', 'phone', 'email']
   })
   .build();
 
@@ -78,6 +79,8 @@ export default function SubmitPage() {
         birth: '',
         address: '',
         personalAgreement: false,
+        phone: '',
+        email: '',
       }
     }
   } satisfies UseFunnelOptions<StepContextMap>);
@@ -128,89 +131,90 @@ export default function SubmitPage() {
   return (
     <>
     <Toaster /> 
-    <VSpace className='h-10'></VSpace>
-    <div className='container mx-auto px-4 py-8 pt-14 flex flex-col flex-grow'>
-      <Link href="/" className='mb-4'>
-        <Image src="/assets/images/court-attack-logo.svg" alt="헌법재판소" width={150} height={100} />
-      </Link>
-      <div className='text-[21px] font-semibold leading-tight mb-4'>
-        {steps[funnel.step].instruction}
+    {/* <VSpace className='h-10'></VSpace> */}
+    <div className='container relative mx-auto px-4 py-8 pt-14 flex flex-col flex-grow h-full'>
+      <div className='flex flex-col sticky top-0 left-0 right-0 py-4 pt-8 bg-gradient-to-b from-white from-80% to-white/0 w-full z-10'>
+        <Link href="/" className='mb-4'>
+          <Image src="/assets/images/court-attack-logo.svg" alt="헌법재판소" width={150} height={100} />
+        </Link>
+        <div className='text-[21px] font-semibold leading-tight mb-4'>
+          {steps[funnel.step].instruction}
+        </div>
       </div>
-      {/* <Steps steps={steps} currentStep={step} /> */}
-
-      <funnel.Render
-        personal-information={({ context, history, step }) => {
-          return (
-          <UserForm
-          id={`${step}-form`}
-          form={userForm}
-          onSubmit={(values: UserFormData) => {
-            history.push('your-opinion', {
-              ...context,
-              ...values,
-              wannabe: '',
-              reason: '',
-            });
+      <div className='flex flex-col flex-grow'>
+        <VSpace size={220}></VSpace>
+        <funnel.Render
+          personal-information={({ context, history, step }) => {
+            return (
+            <UserForm
+            id={`${step}-form`}
+            form={userForm}
+            onSubmit={(values: UserFormData) => {
+              history.push('your-opinion', {
+                ...context,
+                ...values,
+                wannabe: '',
+                reason: '',
+              });
+            }}
+            />
+          )}}
+          your-opinion={({ context, history, step }) => {
+            return (
+              <OpinionForm
+              id={`${step}-form`}
+              form={opinionForm}
+              onSubmit={(values: OpinionFormData) => {
+                console.log(values);
+                history.push('review-generated', {
+                  ...context,
+                  ...values,
+                  opinion: `test: ${values.wannabe} ${values.reason}`,
+                });
+              }} />
+            )
           }}
-          />
-        )}}
-        your-opinion={({ context, history, step }) => {
-          return (
-            <OpinionForm
-            id={`${step}-form`}
-            form={opinionForm}
-            onSubmit={(values: OpinionFormData) => {
-              console.log(values);
-              history.push('review-generated', {
-                ...context,
-                ...values,
-                opinion: `test: ${values.wannabe} ${values.reason}`,
-              });
-            }} />
-          )
-        }}
-        review-generated={({ context, history, step }) => {
-          return (
-            <ReviewGeneratedForm
-            id={`${step}-form`}
-            form={reviewGeneratedForm}
-            onSubmit={(values: ReviewGeneratedFormData) => {
-              history.push('review-submit', {
-                ...context,
-                ...values,
-              });
-            }}
-            context={context}
-            />
-          )
-        }}
-        review-submit={({ context, history, step }) => {
-          return (
-            <ReviewForm
-            id={`${step}-form`}
-            form={reviewForm}
-            context={context}
-            onSubmit={async (values: ReviewSubmitFormData) => {
-              const response = await fetch('/api/submit', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(context),
-              });
-        
-              if (!response.ok) throw new Error('Submission failed');
-              return response.json();
-            }}
-            />
-          )
-        }}
-      />
-    
-      
+          review-generated={({ context, history, step }) => {
+            return (
+              <ReviewGeneratedForm
+              id={`${step}-form`}
+              form={reviewGeneratedForm}
+              onSubmit={(values: ReviewGeneratedFormData) => {
+                history.push('review-submit', {
+                  ...context,
+                  ...values,
+                });
+              }}
+              context={context}
+              />
+            )
+          }}
+          review-submit={({ context, history, step }) => {
+            return (
+              <ReviewForm
+              id={`${step}-form`}
+              form={reviewForm}
+              context={context}
+              onSubmit={async (values: ReviewSubmitFormData) => {
+                const response = await fetch('/api/submit', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(context),
+                });
+          
+                if (!response.ok) throw new Error('Submission failed');
+                return response.json();
+              }}
+              />
+            )
+          }}
+        />
+      </div>
     </div>
     <div id="cta-button-container" className={cn(
-      "w-full px-4 py-8 flex items-center justify-center space-x-2",
+      "w-full px-4 py-8 flex items-center justify-center space-x-2 fixed bottom-0 left-0 right-0 user-select-none pointer-events-none",
       // "bg-gradient-to-t from-white to-white/0",
     )}>
       {
@@ -218,13 +222,16 @@ export default function SubmitPage() {
           <CTAButton onClick={() => {
             funnel.history.back();
           }}
-          className='w-1/3 bg-[#EAECF1] hover:bg-[#EAECF1]/90 text-black rounded-[14px]'
+          className='w-1/3 bg-[#EAECF1] hover:bg-[#EAECF1]/90 text-black rounded-[14px] pointer-events-auto user-select-auto'
           >
             이전
           </CTAButton>
         )
       }
-      <CTAButton type="submit" form={`${funnel.step}-form`}>
+      <CTAButton type="submit" form={`${funnel.step}-form`}
+          disabled={funnel.step === 'personal-information' && !userForm.formState.errors}
+          className='pointer-events-auto user-select-auto'
+      >
         {funnel.step === 'review-submit' ? '제출' : '다음'}
       </CTAButton>
     </div>
