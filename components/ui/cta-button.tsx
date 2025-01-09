@@ -6,9 +6,9 @@ export interface CTAButtonProps extends ButtonProps {
   children: React.ReactNode;
 }
 
-export const CTAButton = React.forwardRef<HTMLButtonElement, CTAButtonProps>(({ children, ...props }, ref) => {
+export const CTAButton = React.forwardRef<HTMLButtonElement, CTAButtonProps>(({ children, className, ...props }, ref) => {
   return (
-    <Button variant="default" size="lg" className={cn("w-full max-w-lg mx-auto bg-[#0B1A3E] hover:bg-[#0B1A3E]/90 text-white h-12 rounded-[14px]", props.className)} {...props} ref={ref}>
+    <Button variant="default" size="lg" className={cn("w-full max-w-lg mx-auto bg-[#0B1A3E] hover:bg-[#0B1A3E]/90 text-white h-12 rounded-[14px]", className)} {...props} ref={ref}>
       {children}
     </Button>
   )

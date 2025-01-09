@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import { CTAButton } from '@/components/ui/cta-button';
 import { VSpace } from '@/components/ui/vspace';
 import dynamic from 'next/dynamic';
+import { PencilLine, Send } from 'lucide-react';
 
 const DrawingCircle = dynamic(() => import('@/components/drawingCircle'), {
   ssr: false,
@@ -19,7 +20,7 @@ const DrawingCross = dynamic(() => import('@/components/drawingCross'), {
 
 export default function Home() {
   return (
-    <main className="container mx-auto min-h-screen flex flex-col items-center justify-center max-h-screen">
+    <main className="container mx-auto min-h-screen flex flex-col items-center justify-center max-h-screen max-w-[500px]">
       <div className={cn(
         "fixed top-0 left-0 right-0",
         "bg-black text-white text-sm text-center py-2"
@@ -63,16 +64,20 @@ export default function Home() {
         </div>
         <VSpace size={60} />
       </div>
-      <Image src="/assets/images/valid-logo-white.svg" alt="전진하는 민주주의 VALID" width={62} height={28} />
       <div id="cta-button-container" className={cn(
-        "w-full px-4 py-8 flex flex-col items-center justify-center",
+        "fixed bottom-0 left-0 right-0 flex flex-col items-end justify-center",
         // "bg-gradient-to-t from-white to-white/0",
       )}>
         <Link href="/submit" className="w-full flex">
-          <CTAButton>
-            지금 바로 의견 보내기
+          <CTAButton className='h-16 font-bold text-lg rounded-full bg-black hover:bg-black/70 fixed top-[60vh] left-4 right-4 w-7/12 min-w-[230px] border-2 border-white ring-2 ring-black'>
+          {/* send icon */}
+          <PencilLine color='white' size={24} className='mr-2'/>
+          지금 의견 보내기
           </CTAButton>
         </Link>
+        <div className='text-white text-xs text-center bg-black/50 rounded-tl-xl px-4 py-2'>
+          <Image src="/assets/images/valid-logo-white.svg" alt="전진하는 민주주의 VALID" width={62} height={24} />
+        </div>
       </div>
       <VSpace className="w-full flex flex-col items-center justify-start" size={60} />
       <div className="fixed bottom-0 left-0 right-0 -z-10">
