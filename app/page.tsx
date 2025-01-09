@@ -69,7 +69,7 @@ export default function Home() {
         // "bg-gradient-to-t from-white to-white/0",
       )}>
         <Link href="/submit" className="w-full flex">
-          <CTAButton className='h-16 font-bold text-lg rounded-full bg-black hover:bg-black/70 fixed bottom-[10vh] left-4 right-4 w-7/12 min-w-[230px] border-2 border-white ring-2 ring-black'>
+          <CTAButton className='h-16 font-bold text-lg rounded-full bg-black hover:bg-black/70 fixed bottom-[10vh] left-4 right-4 w-9/12 min-w-[230px] border-2 border-white ring-2 ring-black'>
           {/* send icon */}
           <PencilLine color='white' size={24} className='mr-2'/>
           지금 의견 보내기
@@ -80,7 +80,7 @@ export default function Home() {
         </div>
       </div>
       <VSpace className="w-full flex flex-col items-center justify-start" size={60} />
-      <div className="fixed bottom-0 left-0 right-0 -z-10 sm:opacity-30">
+      <div className="fixed bottom-0 left-0 right-0 -z-10 sm:opacity-30 opacity-75">
         <Image className="absolute bottom-0 max-h-[500px] object-contain" src="/assets/images/home-bg.png" alt="헌법재판소" width={2000} height={500} />
       </div>
     </main>
