@@ -7,6 +7,15 @@ import { OpinionsList } from '@/components/opinions-list';
 import { cn } from '@/lib/utils';
 import { CTAButton } from '@/components/ui/cta-button';
 import { VSpace } from '@/components/ui/vspace';
+import dynamic from 'next/dynamic';
+
+const DrawingCircle = dynamic(() => import('@/components/drawingCircle'), {
+  ssr: false,
+});
+
+const DrawingCross = dynamic(() => import('@/components/drawingCross'), {
+  ssr: false,
+});
 
 export default function Home() {
   return (
@@ -22,11 +31,13 @@ export default function Home() {
           <VSpace size="40%" />
           <div className="flex flex-col items-center justify-center space-y-4">
             <p className="text-lg max-w-2xl mx-auto text-center leading-tight font-semibold">
-              우리가 원하는 미래를 쟁취하는 <br />
-              가장 빠르고 확실한 방법
+            내란범 윤석열의 신속 탄핵을 촉구하는 <br />
+            100만 시민의견 헌재 전달 프로젝트
             </p>
             <h1>
-              <Image src="/assets/images/court-attack-logo.svg" alt="헌재로 보내자" width={352} height={76} />
+              <DrawingCross className="absolute top-[110px] left-[10px] stroke-red-500" delay={0.5} />
+              <DrawingCircle className="absolute top-[100px] left-[160px] stroke-red-500" delay={1} />
+              <Image src={`/assets/images/logo-hero.svg?v=${Math.random()}`} alt="헌재로 보내자" width={352} height={76} />
             </h1>
           </div>
           
