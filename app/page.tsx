@@ -38,7 +38,7 @@ export default function Home() {
             <h1>
               <DrawingCross className="absolute top-[110px] left-[10px] stroke-red-500" delay={0.5} />
               <DrawingCircle className="absolute top-[100px] left-[160px] stroke-red-500" delay={1} />
-              <Image src={`/assets/images/logo-hero.svg?v=${Math.random()}`} alt="헌재로 보내자" width={352} height={76} />
+              <Image src={`/assets/images/logo-hero.svg?v=${Math.random()}`} alt="헌재로 보내자" width={352} height={76} loading='eager' />
             </h1>
           </div>
           
@@ -81,7 +81,7 @@ export default function Home() {
       </div>
       <VSpace className="w-full flex flex-col items-center justify-start" size={60} />
       <div className="fixed bottom-0 left-0 right-0 -z-10 sm:opacity-30 opacity-75">
-        <Image className="absolute bottom-0 max-h-[500px] object-contain" src="/assets/images/home-bg.png" alt="헌법재판소" width={2000} height={500} />
+        <Image className="absolute bottom-0 max-h-[500px] object-contain" src="/assets/images/home-bg.png" alt="헌법재판소" width={2000} height={500} loading='eager' priority/>
       </div>
     </main>
   );
