@@ -29,7 +29,7 @@ export async function POST(request: Request) {
 
     await sheets.spreadsheets.values.append({
       spreadsheetId: process.env.SHEET_ID,
-      range: 'A2:J',
+      range: 'A3:J',
       valueInputOption: 'RAW',
       requestBody: {
         values: [row],

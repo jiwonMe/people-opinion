@@ -132,8 +132,8 @@ export default function SubmitPage() {
     <>
     <Toaster /> 
     {/* <VSpace className='h-10'></VSpace> */}
-    <div className='container relative mx-auto px-4 py-8 pt-14 flex flex-col flex-grow h-full'>
-      <div className='flex flex-col sticky top-0 left-0 right-0 py-4 pt-8 bg-gradient-to-b from-white from-80% to-white/0 w-full z-10'>
+    <div className='container relative mx-auto flex flex-col flex-grow h-full overflow-y-auto'>
+      <div className='flex flex-col sticky top-0 left-0 right-0 px-4 py-4 pt-8 bg-gradient-to-b from-white from-80% to-white/0 w-full z-50'>
         <Link href="/" className='mb-4'>
           <Image src="/assets/images/court-attack-logo.svg" alt="헌법재판소" width={150} height={100} />
         </Link>
@@ -141,8 +141,8 @@ export default function SubmitPage() {
           {steps[funnel.step].instruction}
         </div>
       </div>
-      <div className='flex flex-col flex-grow'>
-        <VSpace size={220}></VSpace>
+      <div className='flex flex-col flex-grow px-4'>
+        {/* <VSpace size={220}></VSpace> */}
         <funnel.Render
           personal-information={({ context, history, step }) => {
             return (

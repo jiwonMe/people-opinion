@@ -42,7 +42,7 @@ export const personalInformationFormSchema = z.object({
     }, '올바른 생년월일을 입력해주세요'),
   address: z.string().min(5, '주소는 최소 5글자 이상이어야 합니다.'),
   phone: z.string().min(10, '전화번호는 최소 10자리 이상이어야 합니다.').refine((val) => {
-    return /^\d{10}$/.test(val);
+    return /^\d{10,11}$/.test(val);
   }, '전화번호는 숫자만 입력해주세요'),
   email: z.string().email('올바른 이메일 주소를 입력해주세요').refine((val) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
@@ -188,6 +188,12 @@ export const UserForm = ({ form, onSubmit, id }: { form: UseFormReturn<UserFormD
                   className='text-[16px]'
                   onFocus={handleFocus}
                   {...field}
+                  maxLength={11}
+                  // Only allow numeric input
+                  onInput={(e) => {
+                    e.currentTarget.value = e.currentTarget.value.replace(/\D/g, '');
+                    field.onChange(e);
+                  }}
                 />
               </FormControl>
               <FormMessage />
@@ -239,17 +245,20 @@ export const UserForm = ({ form, onSubmit, id }: { form: UseFormReturn<UserFormD
           name="personalAgreement"
           render={({ field }) => (
             <FormItem
-              className="flex items-center space-x-2"
+              className="items-center space-x-2"
             >
-              <FormControl>
-                <Checkbox
-                checked={field.value}
-                onCheckedChange={field.onChange}
-                />
-              </FormControl>
-              <FormLabel>
-                <span className="text-sm text-muted-foreground">개인정보 수집 및 이용에 동의합니다.</span>
-              </FormLabel>
+              <div className="flex items-center space-x-2">
+                <FormControl>
+                  <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                <FormLabel>
+                  <span className="text-sm text-muted-foreground">개인정보 수집 및 이용에 동의합니다.</span>
+                </FormLabel>
+              </div>
+              <FormMessage />
             </FormItem>
           )}
         />

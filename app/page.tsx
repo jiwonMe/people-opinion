@@ -18,12 +18,17 @@ const DrawingCross = dynamic(() => import('@/components/drawingCross'), {
   ssr: false,
 });
 
+const OpinionCounts = dynamic(() => import('@/components/OpinionCounts'), {
+  ssr: false,
+});
+
 export default function Home() {
   return (
     <main className="container mx-auto min-h-[100dvh] flex flex-col items-center justify-center max-h-screen max-w-[500px]">
       <div className={cn(
         "fixed top-0 left-0 right-0",
-        "bg-black text-white text-sm text-center py-2"
+        "bg-black text-white text-sm text-center py-2",
+        "z-50"
       )}>
         개발중인 사이트로 현재 작성된 데이터는 실제 반영되지 않습니다
       </div>
@@ -40,6 +45,7 @@ export default function Home() {
               <DrawingCircle className="absolute top-[100px] left-[160px] stroke-red-500" delay={1} />
               <Image src={`/assets/images/logo-hero.svg?v=${Math.random()}`} alt="헌재로 보내자" width={352} height={76} loading='eager' />
             </h1>
+            <OpinionCounts className="text-2xl font-bold" />
           </div>
           
           {/* <Card className={cn(
