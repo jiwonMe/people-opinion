@@ -179,13 +179,25 @@ export default function SubmitPage() {
     return () => container.removeEventListener('scroll', handleScroll);
   }, [debug, page, funnel.history, funnel.context]);
 
+  /**
+   * step이 변경될 때 container와 form의 scroll 위치를 조정하는 effect
+   * @description
+   * - container를 최상단으로 스크롤
+   * - 현재 step의 form이 있을 경우 form으로 스크롤
+   */
   useEffect(() => {
-    // 현재 step의 form이 있을 경우 해당 form으로 scroll
-    const currentForm = formRefs[funnel.step]?.current;
-    if (currentForm) {
-      currentForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Container scroll 초기화
+    
+    if (containerRef.current) {
+      const currentForm = formRefs[funnel.step]?.current;
+      currentForm?.scroll({
+        behavior: 'instant',
+        top: 0,
+      });
     }
-  }, [funnel.step]); // funnel.step이 변경될 때마다 실행
+
+    
+  }, [funnel.step]);
 
   
 
