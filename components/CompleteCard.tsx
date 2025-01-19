@@ -105,8 +105,18 @@ const CompleteCard = ({ name, index, className }: CompleteCardProps) => {
       }
 
       // Index number 렌더링 (900 weight)
-      ctx.font = `900 100px ${fontFamily}`;
-      ctx.fillText(`${index.toLocaleString()}번째`, 36, 240);
+      const indexText = `${index.toLocaleString()}` + (index <= 500 ? '번째' : '명');
+      let fontSize = 100;  // 초기 font size
+      
+      // Text width가 400px을 넘지 않을 때까지 폰트 크기 조절
+      do {
+        ctx.font = `900 ${fontSize}px ${fontFamily}`;
+        const textWidth = ctx.measureText(indexText).width;
+        if (textWidth <= 400) break;
+        fontSize -= 2;  // 2px씩 감소
+      } while (fontSize > 30);  // 최소 폰트 사이즈 제한
+      
+      ctx.fillText(indexText, 36, 240);
 
       // Description text 렌더링 (500 weight)
       ctx.font = `500 30px ${fontFamily}`;
