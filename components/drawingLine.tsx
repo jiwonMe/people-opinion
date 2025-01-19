@@ -26,7 +26,8 @@ function DrawingLine({ className, delay = 0 }: { className?: string, delay?: num
       `}</style>
       <svg
         id="cross-path"
-        width="358" height="86" viewBox="0 0 358 86" fill="none"
+        width="100%" viewBox="0 0 400 86" fill="none"
+        preserveAspectRatio="none"
         xmlns="http://www.w3.org/2000/svg"
         className={cn(
           "relative", // Positioning
@@ -37,7 +38,7 @@ function DrawingLine({ className, delay = 0 }: { className?: string, delay?: num
       >
         <path
         d="M7 59C140.513 28.9305 216.319 20.3193 355 34.9947"
-        stroke-width="55"
+        stroke-width="60"
         stroke="#00FF59"
         className={cn(
           "stroke-dasharray-${pathLength}", // Set dasharray

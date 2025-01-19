@@ -32,13 +32,13 @@ export default function Home() {
       )}>
         개발중인 사이트로 현재 작성된 데이터는 실제 반영되지 않습니다
       </div>
-      <div className="container mx-auto px-4 py-8 flex flex-col items-center justify-center flex-grow">
-        <div className="relative h-full flex flex-col items-center justify-center">
-          <VSpace size="40%" />
-          <div className="flex flex-col items-center justify-center space-y-4">
-            <p
+      <div className="container mx-auto px-4 py-8 flex flex-col items-center flex-grow">
+        <div className="absolute top-1/4 flex flex-col justify-center">
+          {/* <VSpace size="10%" /> */}
+          <div className="flex flex-col items-center">
+          <p
               className={cn(
-                "text-md max-w-2xl mx-auto text-center leading-tight font-semibold mb-4",
+                "text-md mx-auto text-center leading-tight font-semibold mb-8",
                 "text-gray-900",
                 "relative",
                 "animate-fade-in",
@@ -48,13 +48,11 @@ export default function Home() {
             내란범 윤석열의 신속 탄핵을 촉구하는 <br />
             100만 시민의견 헌재 전달 프로젝트
             </p>
-            <h1>
-              <DrawingLine className="absolute top-[94px] left-[-5px] stroke-[#00FF59]" delay={0.5} />
-              <Image src={`/assets/images/logo-hero.svg?v=${Math.random()}`} alt="헌재로 보내자" width={352} height={76} loading='eager' />
+            <h1 className='w-[90%] relative'>
+              <DrawingLine className="absolute top-[30%] left-[5%] stroke-[#00FF59]" delay={0.5} />
+              <Image src={`/assets/images/logo-hero.svg?v=${Math.random()}`} alt="헌재로 보내자" width={380} height={100} loading='eager' className='md:w-[700px] w-[500px]'/>
             </h1>
-            <div className="text-2xl font-bold">
-              <OpinionCounts />명의 시민들과 함께 하는 중!
-            </div>
+            
           </div>
           
           {/* <Card className={cn(
@@ -77,7 +75,7 @@ export default function Home() {
             </ScrollArea>
           </Card> */}
         </div>
-        <VSpace size={60} />
+        {/* <VSpace size={60} /> */}
       </div>
       <div id="cta-button-container" className={cn(
         "fixed bottom-0 left-0 right-0 flex flex-col items-end justify-center",
