@@ -203,12 +203,6 @@ export default function FinishPage() {
             >
             외부로 공유하기
             </CTAButton>
-            <CTAButton 
-            onClick={handleInstagramShare}
-            className="w-full rounded-xl bg-pink-500 hover:bg-pink-500/80 py-4 text-white"
-            >
-            인스타 스토리 공유하기
-            </CTAButton>
           <VSpace size={120} />   
         </div>
       </div>
