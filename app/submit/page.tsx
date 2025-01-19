@@ -18,6 +18,7 @@ import { generateOpinion } from '@/components/generateOpinion';
 import { Toast, ToastProvider } from '@/components/ui/toast';
 import { Toaster } from '@/components/ui/toaster';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useRouter, useSearchParams } from 'next/navigation';
 // Add dynamic rendering configuration
 export const dynamic = 'force-dynamic';
 
@@ -60,13 +61,9 @@ const funnelSteps = createFunnelSteps<StepContext>()
 
 
 export default function SubmitPage() {
-
-  useEffect(() => {
-    window.addEventListener('beforeunload', function (event) {
-      event.returnValue = '';
-      return 'Are you sure you want to leave?';
-  });
-  }, []);
+  const searchParams = useSearchParams();
+  const debug = searchParams.get('debug');
+  const page = searchParams.get('page');
 
   const funnel = useFunnel({
     id: 'personal-information',
@@ -127,6 +124,22 @@ export default function SubmitPage() {
       instruction: (<p>작성한 내용을 검토하고<br />제출해주세요</p>),
     },
   }
+
+  useEffect(() => {
+    // 디버깅 모드에서 특정 페이지로 이동
+    if (debug === 'true' && page) {
+      if (steps[page as keyof typeof steps]) {
+        funnel.history.push(page as keyof typeof steps, funnel.context);
+      }
+    }
+
+    window.addEventListener('beforeunload', function (event) {
+      event.returnValue = '';
+      return 'Are you sure you want to leave?';
+    });
+  }, [debug, page, funnel.history, funnel.context]);
+
+  
 
   return (
     <>
@@ -230,9 +243,12 @@ export default function SubmitPage() {
       }
       <CTAButton type="submit" form={`${funnel.step}-form`}
           disabled={funnel.step === 'personal-information' && !userForm.formState.errors}
-          className='pointer-events-auto user-select-auto'
+          className={cn(
+            'pointer-events-auto user-select-auto',
+            funnel.step === 'review-submit' && 'bg-[#00FF59] hover:bg-[#00FF59]/90 text-black text-lg font-bold',
+          )}
       >
-        {funnel.step === 'review-submit' ? '제출' : '다음'}
+        {funnel.step === 'review-submit' ? '완료! 헌재로 보내기' : '다음'}
       </CTAButton>
     </div>
     </>

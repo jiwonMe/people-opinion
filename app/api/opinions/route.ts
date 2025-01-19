@@ -3,10 +3,20 @@ import { google } from 'googleapis';
 
 export const dynamic = 'force-dynamic';
 
+// Cache object to store fetched data
+let cache: { data: any; timestamp: number } | null = null;
+const CACHE_DURATION = 5 * 60 * 1000; // Cache duration in milliseconds (e.g., 5 minutes)
+
 export async function GET(request: Request) {
   try {
     const url = new URL(request.url);
     const onlyCount = url.searchParams.get('onlyCount') === 'true';
+
+    // Check if cache is valid
+    if (cache && Date.now() - cache.timestamp < CACHE_DURATION) {
+      console.log('Returning cached data');
+      return NextResponse.json(cache.data);
+    }
 
     const auth = new google.auth.GoogleAuth({
       credentials: JSON.parse(process.env.GOOGLE_SHEETS_CREDENTIALS || ''),
@@ -24,7 +34,9 @@ export async function GET(request: Request) {
 
     // If only count is requested, return only the count
     if (onlyCount) {
-      return NextResponse.json({ totalCount });
+      const responseData = { totalCount };
+      cache = { data: responseData, timestamp: Date.now() };
+      return NextResponse.json(responseData);
     }
 
     // Fetch the opinions data
@@ -44,7 +56,9 @@ export async function GET(request: Request) {
     }));
 
     // Include the total count in the response
-    return NextResponse.json({ totalCount, opinions });
+    const responseData = { totalCount, opinions };
+    cache = { data: responseData, timestamp: Date.now() };
+    return NextResponse.json(responseData);
   } catch (error) {
     console.error('Failed to fetch opinions:', error);
     return NextResponse.json(

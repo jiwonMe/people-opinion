@@ -115,10 +115,11 @@ export const ReviewGeneratedForm = ({ form, onSubmit, id, context }: { form: Use
                     // Allow resizing only vertically
                     "resize-y",
                   )}
+                  maxLength={3000}
                 />
               </FormControl>
               <FormDescription className="text-right">
-                {field.value.length}자 / 1500자
+                {field.value.length}자 / 3000자
               </FormDescription>
               <FormMessage />
             </FormItem>

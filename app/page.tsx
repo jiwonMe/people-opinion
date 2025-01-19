@@ -14,7 +14,7 @@ const DrawingCircle = dynamic(() => import('@/components/drawingCircle'), {
   ssr: false,
 });
 
-const DrawingCross = dynamic(() => import('@/components/drawingCross'), {
+const DrawingLine = dynamic(() => import('@/components/drawingLine'), {
   ssr: false,
 });
 
@@ -36,16 +36,25 @@ export default function Home() {
         <div className="relative h-full flex flex-col items-center justify-center">
           <VSpace size="40%" />
           <div className="flex flex-col items-center justify-center space-y-4">
-            <p className="text-lg max-w-2xl mx-auto text-center leading-tight font-semibold">
+            <p
+              className={cn(
+                "text-md max-w-2xl mx-auto text-center leading-tight font-semibold mb-4",
+                "text-gray-900",
+                "relative",
+                "animate-fade-in",
+                "delay-1000"
+              )}
+            >
             내란범 윤석열의 신속 탄핵을 촉구하는 <br />
             100만 시민의견 헌재 전달 프로젝트
             </p>
             <h1>
-              <DrawingCross className="absolute top-[110px] left-[10px] stroke-red-500" delay={0.5} />
-              <DrawingCircle className="absolute top-[100px] left-[160px] stroke-red-500" delay={1} />
+              <DrawingLine className="absolute top-[94px] left-[-5px] stroke-[#00FF59]" delay={0.5} />
               <Image src={`/assets/images/logo-hero.svg?v=${Math.random()}`} alt="헌재로 보내자" width={352} height={76} loading='eager' />
             </h1>
-            <OpinionCounts className="text-2xl font-bold" />
+            <div className="text-2xl font-bold">
+              <OpinionCounts />명의 시민들과 함께 하는 중!
+            </div>
           </div>
           
           {/* <Card className={cn(
@@ -87,7 +96,15 @@ export default function Home() {
       </div>
       <VSpace className="w-full flex flex-col items-center justify-start" size={60} />
       <div className="fixed bottom-0 left-0 right-0 -z-10 sm:opacity-30 opacity-75">
-        <Image className="absolute bottom-0 max-h-[500px] object-contain" src="/assets/images/home-bg.png" alt="헌법재판소" width={2000} height={500} loading='eager' priority/>
+        <Image
+          className="absolute bottom-0 max-h-[500px] object-contain filter-blue"
+          src="/assets/images/home-bg.png"
+          alt="헌법재판소"
+          width={2000}
+          height={500}
+          loading='eager'
+          priority
+        />
       </div>
     </main>
   );

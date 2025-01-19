@@ -144,6 +144,15 @@ export const OpinionForm = ({ form, onSubmit, id }: { form: UseFormReturn<Opinio
           )}
         />
       </form>
+      {/* 예시 */}
+      <div className="text-sm bg-gray-200 rounded-xl px-6 py-4 shadow-md mt-4">
+          <p className="font-semibold">[예시 완성본]</p>
+          <p>존경하는 재판장님,</p>
+          <p>저는 <span className="font-semibold">서울시 강남구 역삼동에 거주하는 30대 남성 김철수</span>입니다.</p>
+          <p>저는 <span className="font-semibold">하루하루 먹고 사는 문제에 걱정 없는 미래</span>를 원합니다.</p>
+          <p>윤석열은 <span className="font-semibold">우리나라가 피로 쓴 민주주의의 역사를 심각히 퇴보시켰기에</span> 반드시 탄핵되어야 합니다.</p>
+          <p>부디 국민들의 불안과 걱정을 헤아리시고, 하루 빨리 탄핵을 인용하여 법과 정의의 이름으로 민주주의를 바로 세워주시길 강력히 촉구합니다.</p>
+      </div>
     </Form>
   );
 }
