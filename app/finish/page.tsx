@@ -22,9 +22,13 @@ export default function FinishPage() {
     const submittedData = sessionStorage.getItem('submittedData');
     const userData = submittedData ? JSON.parse(submittedData) : null;
     const savedSubmitNumber = sessionStorage.getItem('submitNumber');
+    const savedDataHash = sessionStorage.getItem('dataHash');
+    
+    // data의 hash 값 생성
+    const currentDataHash = userData ? btoa(JSON.stringify(userData)) : '';
 
-    // submitNumber가 이미 저장되어 있으면 그 값을 사용
-    if (savedSubmitNumber) {
+    // submitNumber가 있고 hash 값이 일치하는 경우 저장된 값 사용
+    if (savedSubmitNumber && savedDataHash === currentDataHash) {
       setData({
         name: userData?.name || "익명의 시민",
         index: parseInt(savedSubmitNumber)
@@ -33,12 +37,12 @@ export default function FinishPage() {
       return;
     }
 
-    // submitNumber가 없는 경우에만 API 호출
+    // submitNumber가 없거나 hash가 다른 경우 API 호출
     fetch('/api/opinions?onlyCount=true')
       .then(response => response.json())
       .then(responseData => {
-        // API 응답으로 받은 index를 sessionStorage에 저장
         sessionStorage.setItem('submitNumber', responseData.totalCount.toString());
+        sessionStorage.setItem('dataHash', currentDataHash);
         setData({
           name: userData?.name || "익명의 시민",
           index: responseData.totalCount
