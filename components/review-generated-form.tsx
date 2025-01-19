@@ -14,14 +14,22 @@ export const reviewGeneratedFormSchema = z.object({
 
 export type ReviewGeneratedFormData = z.infer<typeof reviewGeneratedFormSchema>;
 
-export const ReviewGeneratedForm = forwardRef(({ form, onSubmit, id, context }: { form: UseFormReturn<ReviewGeneratedFormData>, onSubmit: (values: ReviewGeneratedFormData) => void, id: string, context: {
-  wannabe: string;
-  reason: string;
-  name: string;
-  address: string;
-  birth: string;
-  gender: string;
-} }) => {
+export const ReviewGeneratedForm = forwardRef<
+  HTMLFormElement,
+  {
+    form: UseFormReturn<ReviewGeneratedFormData>;
+    onSubmit: (values: ReviewGeneratedFormData) => void;
+    id: string;
+    context: {
+      wannabe: string;
+      reason: string;
+      name: string;
+      address: string;
+      birth: string;
+      gender: string;
+    };
+  }
+>(({ form, onSubmit, id, context }, ref) => {
 
   const { wannabe, reason, name, address, birth, gender } = context;
 
@@ -90,6 +98,7 @@ export const ReviewGeneratedForm = forwardRef(({ form, onSubmit, id, context }: 
     status === 'SUCCESS' ? (
     <Form {...form}>
       <form 
+        ref={ref}
         id={id}
         className="flex-grow"
         onSubmit={form.handleSubmit(onSubmit)}

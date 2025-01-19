@@ -56,7 +56,14 @@ export const personalInformationFormSchema = z.object({
 
 export type UserFormData = z.infer<typeof personalInformationFormSchema>;
 
-export const UserForm = forwardRef(({ form, onSubmit, id }: { form: UseFormReturn<UserFormData>, onSubmit: (values: UserFormData) => void, id: string }, ref) => {
+export const UserForm = forwardRef<
+  HTMLFormElement,
+  {
+    form: UseFormReturn<UserFormData>;
+    onSubmit: (values: UserFormData) => void;
+    id: string;
+  }
+>(({ form, onSubmit, id }, ref) => {
   const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
     event.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
   };
@@ -64,8 +71,11 @@ export const UserForm = forwardRef(({ form, onSubmit, id }: { form: UseFormRetur
   return (
     <Form {...form}>
       <form
-      id={id}
-      onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        ref={ref}
+        id={id}
+        onSubmit={form.handleSubmit(onSubmit)} 
+        className="space-y-6"
+      >
         <FormField
           control={form.control}
           name="name"

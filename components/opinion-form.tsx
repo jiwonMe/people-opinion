@@ -57,7 +57,14 @@ export const yourOpinionFormSchema = z.object({
 
 export type OpinionFormData = z.infer<typeof yourOpinionFormSchema>;
 
-export const OpinionForm = forwardRef(({ form, onSubmit, id }: { form: UseFormReturn<OpinionFormData>, onSubmit: (values: OpinionFormData) => void, id: string }, ref) => {
+export const OpinionForm = forwardRef<
+  HTMLFormElement,
+  {
+    form: UseFormReturn<OpinionFormData>;
+    onSubmit: (values: OpinionFormData) => void;
+    id: string;
+  }
+>(({ form, onSubmit, id }, ref) => {
   const [shuffledWannabeOptions, setShuffledWannabeOptions] = useState<{ value: string; text: string }[]>([]);
   const [shuffledReasonOptions, setShuffledReasonOptions] = useState<{ value: string; text: string }[]>([]);
 
@@ -69,6 +76,7 @@ export const OpinionForm = forwardRef(({ form, onSubmit, id }: { form: UseFormRe
   return (
     <Form {...form}>
       <form 
+        ref={ref}
         id={id}
         onSubmit={form.handleSubmit(onSubmit)} 
         className="space-y-6"

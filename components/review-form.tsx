@@ -31,7 +31,15 @@ export const reviewSubmitFormSchema = z.object({
 
 export type ReviewSubmitFormData = z.infer<typeof reviewSubmitFormSchema>;
 
-export const ReviewForm = forwardRef(({ form, onSubmit, id, context }: { form: UseFormReturn<ReviewSubmitFormData>, onSubmit: (values: ReviewSubmitFormData) => Promise<void>, id: string, context: ReviewSubmitFormData }, ref) => {
+export const ReviewForm = forwardRef<
+  HTMLFormElement,
+  {
+    form: UseFormReturn<ReviewSubmitFormData>;
+    onSubmit: (values: ReviewSubmitFormData) => Promise<void>;
+    id: string;
+    context: ReviewSubmitFormData;
+  }
+>(({ form, onSubmit, id, context }, ref) => {
   const router = useRouter();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -88,7 +96,11 @@ export const ReviewForm = forwardRef(({ form, onSubmit, id, context }: { form: U
           </ScrollArea>
         </div>
       </div>
-      <form id={id} onSubmit={_onSubmit}>
+      <form 
+        ref={ref}
+        id={id} 
+        onSubmit={_onSubmit}
+      >
         <input type="hidden" name="url" value={window.location.href} />
       </form>
       <VSpace size={80} />
