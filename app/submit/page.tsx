@@ -132,6 +132,13 @@ export default function SubmitPage() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Container가 있을 경우 스크롤을 최상단으로 이동
+    if (containerRef.current) {
+      containerRef.current.scrollTop = 0;
+    }
+  }, [funnel.step]); // funnel.step이 변경될 때마다 실행
+
+  useEffect(() => {
     // 디버깅 모드에서 특정 페이지로 이동
     if (debug === 'true' && page) {
       if (steps[page as keyof typeof steps]) {

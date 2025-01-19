@@ -195,6 +195,7 @@ export const UserForm = ({ form, onSubmit, id }: { form: UseFormReturn<UserFormD
                     e.currentTarget.value = e.currentTarget.value.replace(/\D/g, '');
                     field.onChange(e);
                   }}
+                  type="tel"
                 />
               </FormControl>
               <FormMessage />
