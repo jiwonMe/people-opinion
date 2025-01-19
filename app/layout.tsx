@@ -10,24 +10,39 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   // Base URL for resolving Open Graph and Twitter images
   metadataBase: new URL('https://attack.valid.or.kr'),
-  title: '헌재로 보내자 - 우리가 원하는 미래를 쟁취하는 가장 빠르고 확실한 방법',
-  description: '윤석열 탄핵심판 국민참여의견서 작성',
+  title: '주문, 피청구인 윤석열을 탄핵하라 - 내란범 윤석열의 신속 탄핵을 촉구하는 100만 시민의견 헌재 전달 프로젝트',
+  description: '주문, 피청구인 윤석열을 탄핵하라 - 내란범 윤석열의 신속 탄핵을 촉구하는 100만 시민의견 헌재 전달 프로젝트',
   openGraph: {
     images: [
       {
         url: '/assets/images/og-image.png',
         width: 1200,
         height: 630,
-        alt: '헌재로 보내자 - 우리가 원하는 미래를 쟁취하는 가장 빠르고 확실한 방법',
+        alt: '주문, 피청구인 윤석열을 탄핵하라 - 내란범 윤석열의 신속 탄핵을 촉구하는 100만 시민의견 헌재 전달 프로젝트',
         type: 'image/png',
       },
     ],
     locale: 'ko_KR',
     type: 'website',
-    siteName: '헌재로 보내자',
-    title: '헌재로 보내자 - 우리가 원하는 미래를 쟁취하는 가장 빠르고 확실한 방법',
-    description: '윤석열 탄핵심판 국민참여의견서 작성',
+    siteName: '주문, 피청구인 윤석열을 탄핵하라',
+    title: '주문, 피청구인 윤석열을 탄핵하라 - 내란범 윤석열의 신속 탄핵을 촉구하는 100만 시민의견 헌재 전달 프로젝트',
+    description: '주문, 피청구인 윤석열을 탄핵하라 - 내란범 윤석열의 신속 탄핵을 촉구하는 100만 시민의견 헌재 전달 프로젝트',
   },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '주문, 피청구인 윤석열을 탄핵하라 - 내란범 윤석열의 신속 탄핵을 촉구하는 100만 시민의견 헌재 전달 프로젝트',
+    description: '주문, 피청구인 윤석열을 탄핵하라 - 내란범 윤석열의 신속 탄핵을 촉구하는 100만 시민의견 헌재 전달 프로젝트',
+    images: ['/assets/images/og-image.png'],
+  },
+  alternates: {
+    canonical: 'https://attack.valid.or.kr',
+  },
+  keywords: '탄핵, 윤석열, 헌법재판소, 시민의견',
+  authors: [{ name: 'VALID - 전진하는 민주주의' }],
 };
 
 export default function RootLayout({
