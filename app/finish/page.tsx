@@ -115,10 +115,10 @@ export default function FinishPage() {
         return;
       }
 
+      const userId = sessionStorage.getItem('userId');
       const shareData = {
         title: '탄핵 촉구 의견서 제출 완료',
-        text: '저는 방금 탄핵 촉구 의견서를 제출했습니다. 더 많은 시민들과 함께 헌법재판소의 문을 두드려요!',
-        url: 'https://attack.valid.or.kr',
+        text: `저는 방금 탄핵 촉구 의견서를 제출했습니다. 더 많은 시민들과 함께 헌법재판소의 문을 두드려요! \n\n 참여링크: https://attack.valid.or.kr?ref=${userId || ''}`,
         files: [new File([blob], '탄핵촉구_참여인증.png', { type: 'image/png' })]
       };
 
