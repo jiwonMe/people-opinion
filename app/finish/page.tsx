@@ -24,8 +24,8 @@ export default function FinishPage() {
     const savedSubmitNumber = sessionStorage.getItem('submitNumber');
     const savedDataHash = sessionStorage.getItem('dataHash');
     
-    // data의 hash 값 생성
-    const currentDataHash = userData ? btoa(JSON.stringify(userData)) : '';
+    // data의 hash 값 생성 - encodeURIComponent 추가
+    const currentDataHash = userData ? btoa(encodeURIComponent(JSON.stringify(userData))) : '';
 
     // submitNumber가 있고 hash 값이 일치하는 경우 저장된 값 사용
     if (savedSubmitNumber && savedDataHash === currentDataHash) {

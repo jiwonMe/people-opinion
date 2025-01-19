@@ -186,7 +186,7 @@ export default function SubmitPage() {
           {steps[funnel.step].instruction}
         </div>
       </div>
-      <div className='flex flex-col flex-grow px-4'>
+      <div className='flex flex-col flex-grow px-4 h-fit'>
         {/* <VSpace size={220}></VSpace> */}
         <funnel.Render
           personal-information={({ context, history, step }) => {
