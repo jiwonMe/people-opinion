@@ -14,6 +14,7 @@ import { useRouter } from 'next/navigation';
 import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import { cn } from '@/lib/utils';
 import { CTAButton } from './ui/cta-button';
+import { VSpace } from './ui/vspace';
 
 export const reviewSubmitFormSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -62,41 +63,37 @@ export function ReviewForm({ form, onSubmit, id, context }: { form: UseFormRetur
 
   return (
     <div className="space-y-6 flex flex-col">
-      <ScrollArea className="flex-1">
-        <div>
-          <h3 className="font-semibold">제출 정보</h3>
-          <div className="grid grid-cols-2 gap-4 mt-2">
-            <div>
-              <span className="text-sm text-muted-foreground">이름</span>
-              <p>{context.name}</p>
-            </div>
-            <div>
-              <span className="text-sm text-muted-foreground">성별</span>
-              <p>{context.gender}</p>
-            </div>
-            <div>
-              <span className="text-sm text-muted-foreground">생년월일</span>
-              <p>{context.birth}</p>
-            </div>
-            <div>
-              <span className="text-sm text-muted-foreground">거주지</span>
-              <p>{context.address}</p>
+      <div className="space-y-4">
+          <div>
+            <h3 className="font-semibold">제출 정보</h3>
+            <div className="grid grid-cols-2 gap-4 mt-2">
+              {[
+                { label: '이름', value: context.name },
+                { label: '성별', value: context.gender },
+                { label: '생년월일', value: context.birth },
+                { label: '거주지', value: context.address },
+              ].map(({ label, value }) => (
+                <div key={label}>
+                  <span className="text-sm text-muted-foreground">{label}</span>
+                  <p>{value}</p>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
 
         <div>
           <h3 className="font-semibold">의견</h3>
-          <ScrollArea className="mt-2 max-h-40 overflow-y-auto">
+          <ScrollArea className="text-sm bg-gray-200 rounded-xl px-6 py-4 shadow-md mt-4">
             <p className="whitespace-pre-wrap">{context.opinion}</p>
           </ScrollArea>
         </div>
-      </ScrollArea>
+      </div>
       <form id={id} onSubmit={_onSubmit}>
         <input type="hidden" name="url" value={window.location.href} />
       </form>
+      <VSpace size={80} />
 
-      <div className="flex justify-between">
+      {/* <div className="flex justify-between">
         <div className="space-x-2">
           <Button
             type="button"
@@ -117,7 +114,7 @@ export function ReviewForm({ form, onSubmit, id, context }: { form: UseFormRetur
             공유하기
           </Button>
         </div>
-      </div>
+      </div> */}
 
       {/* <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
         <DrawerContent 
