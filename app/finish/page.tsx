@@ -21,12 +21,26 @@ export default function FinishPage() {
   useEffect(() => {
     const submittedData = sessionStorage.getItem('submittedData');
     const userData = submittedData ? JSON.parse(submittedData) : null;
+    const savedSubmitNumber = sessionStorage.getItem('submitNumber');
 
+    // submitNumber가 이미 저장되어 있으면 그 값을 사용
+    if (savedSubmitNumber) {
+      setData({
+        name: userData?.name || "익명의 시민",
+        index: parseInt(savedSubmitNumber)
+      });
+      setLoading(false);
+      return;
+    }
+
+    // submitNumber가 없는 경우에만 API 호출
     fetch('/api/opinions?onlyCount=true')
       .then(response => response.json())
       .then(responseData => {
+        // API 응답으로 받은 index를 sessionStorage에 저장
+        sessionStorage.setItem('submitNumber', responseData.totalCount.toString());
         setData({
-          name: userData?.name || "익명의 시민", // session storage에서 이름을 가져오거나 기본값 사용
+          name: userData?.name || "익명의 시민",
           index: responseData.totalCount
         });
         setLoading(false);
@@ -147,7 +161,7 @@ export default function FinishPage() {
             data && (
               <div className="w-full flex flex-col items-center justify-center">
                 <div ref={cardRef} className="mx-auto">
-                  <CompleteCard name={data.name} index={Number(data.index) + 1} className="w-full max-w-[300px] aspect-square rounded-xl shadow-xl border-gray-100 border"/>
+                  <CompleteCard name={data.name} index={Number(data.index)} className="w-full max-w-[300px] aspect-square rounded-xl shadow-xl border-gray-100 border"/>
                 </div>
                 <div className="flex flex-col w-full gap-2 mt-4">
                   <CTAButton 
