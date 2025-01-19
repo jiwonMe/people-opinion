@@ -22,6 +22,7 @@ import {
 } from '@/components/ui/select';
 import { Checkbox } from './ui/checkbox';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from './ui/input-otp';
+import { VSpace } from './ui/vspace';
 
 export const personalInformationFormSchema = z.object({
   name: z.string().min(2, '이름은 최소 2글자 이상이어야 합니다.'),
@@ -263,6 +264,7 @@ export const UserForm = ({ form, onSubmit, id }: { form: UseFormReturn<UserFormD
           )}
         />
       </form>
+      <VSpace size={60} />
     </Form>
   );
 }

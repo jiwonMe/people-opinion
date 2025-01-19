@@ -65,6 +65,8 @@ export default function SubmitPage() {
   const debug = searchParams.get('debug');
   const page = searchParams.get('page');
 
+  const router = useRouter();
+
   const funnel = useFunnel({
     id: 'personal-information',
     steps: funnelSteps,
@@ -125,6 +127,10 @@ export default function SubmitPage() {
     },
   }
 
+  // scroll 상태를 추적하기 위한 state 추가
+  const [showScrollHint, setShowScrollHint] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     // 디버깅 모드에서 특정 페이지로 이동
     if (debug === 'true' && page) {
@@ -137,6 +143,25 @@ export default function SubmitPage() {
       event.returnValue = '';
       return 'Are you sure you want to leave?';
     });
+
+    const container = containerRef.current;
+    if (!container) return;
+
+    /**
+     * Scroll event handler
+     * Container의 scroll 위치를 체크하여 hint 표시 여부를 결정
+     */
+    const handleScroll = () => {
+      const { scrollHeight, scrollTop, clientHeight } = container;
+      // scroll이 끝까지 도달하지 않았을 때 hint 표시
+      setShowScrollHint(scrollHeight - scrollTop - clientHeight > 20);
+    };
+
+    container.addEventListener('scroll', handleScroll);
+    // 초기 로드시 scroll 상태 체크
+    handleScroll();
+
+    return () => container.removeEventListener('scroll', handleScroll);
   }, [debug, page, funnel.history, funnel.context]);
 
   
@@ -145,10 +170,10 @@ export default function SubmitPage() {
     <>
     <Toaster /> 
     {/* <VSpace className='h-10'></VSpace> */}
-    <div className='container relative mx-auto flex flex-col flex-grow h-full overflow-y-auto'>
+    <div className='container relative mx-auto flex flex-col flex-grow h-full overflow-y-auto' ref={containerRef}>
       <div className='flex flex-col sticky top-0 left-0 right-0 px-4 py-4 pt-8 bg-gradient-to-b from-white from-80% to-white/0 w-full z-50'>
-        <Link href="/" className='mb-4'>
-          <Image src="/assets/images/court-attack-logo.svg" alt="헌법재판소" width={150} height={100} />
+        <Link href="/" className='mb-2'>
+          <Image src="/assets/images/court-attack-logo.svg" alt="헌법재판소" width={120} height={32} />
         </Link>
         <div className='text-[21px] font-semibold leading-tight mb-4'>
           {steps[funnel.step].instruction}
@@ -209,16 +234,27 @@ export default function SubmitPage() {
               form={reviewForm}
               context={context}
               onSubmit={async (values: ReviewSubmitFormData) => {
-                const response = await fetch('/api/submit', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify(context),
-                });
-          
-                if (!response.ok) throw new Error('Submission failed');
-                return response.json();
+                try {
+                  // session storage에 제출 데이터 저장
+                  sessionStorage.setItem('submittedData', JSON.stringify(context));
+
+                  const response = await fetch('/api/submit', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(context),
+                  });
+
+                  if (!response.ok) throw new Error('Submission failed');
+                  
+                  // API 호출 성공 후 finish 페이지로 이동
+                  router.push('/finish');
+                  return response.json();
+                } catch (error) {
+                  console.error('Submit error:', error);
+                  throw error;
+                }
               }}
               />
             )
@@ -226,6 +262,16 @@ export default function SubmitPage() {
         />
       </div>
     </div>
+
+    {showScrollHint && (
+      <div className="fixed bottom-24 left-1/2 -translate-x-1/2 bg-black/80 text-white px-4 py-2 rounded-full text-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2 inline-block">
+          <path d="M6 9l6 6 6-6"/>
+        </svg>
+        아래에 내용이 더 있어요
+      </div>
+    )}
+
     <div id="cta-button-container" className={cn(
       "w-full px-4 py-8 flex items-center justify-center space-x-2 fixed bottom-0 left-0 right-0 user-select-none pointer-events-none",
       // "bg-gradient-to-t from-white to-white/0",
