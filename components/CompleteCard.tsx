@@ -112,10 +112,10 @@ const CompleteCard = ({ name, index, className }: CompleteCardProps) => {
       ctx.font = `500 30px ${fontFamily}`;
       if (index <= 500) {
         ctx.fillText('시민으로 헌법재판소로', 36, 290);
-        ctx.fillText('앞장서는 중', 36, 330);
+        ctx.fillText('앞장서는 중!', 36, 330);
       } else {
         ctx.fillText('시민이 함께 헌법재판소에', 36, 290);
-        ctx.fillText('요구하는 중', 36, 330);
+        ctx.fillText('요구하는 중!', 36, 330);
       }
 
       // Background image 렌더링

@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     const sheets = google.sheets({ version: 'v4', auth });
     
     const row = [
-      crypto.randomUUID(),
+      data.sessionId ?? crypto.randomUUID(),
       data.name,
       data.wannabe,
       data.reason,

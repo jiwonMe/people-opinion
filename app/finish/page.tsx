@@ -62,8 +62,8 @@ export default function FinishPage() {
    */
   const handleCopyLink = async () => {
     try {
-      const uuid = uuidv4().substring(0, 6);
-      const shareLink = `https://attack.valid.or.kr?ref=${uuid}`;
+      const userId = sessionStorage.getItem('userId');
+      const shareLink = `https://attack.valid.or.kr?ref=${userId || ''}`;
       await navigator.clipboard.writeText(shareLink);
       setShowTooltip(true);
       setTimeout(() => setShowTooltip(false), 2000);

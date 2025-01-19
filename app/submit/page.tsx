@@ -243,7 +243,10 @@ export default function SubmitPage() {
                     headers: {
                       'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(context),
+                    body: JSON.stringify({
+                      ...context,
+                      sessionId: sessionStorage.getItem('userId'),
+                    }),
                   });
 
                   if (!response.ok) throw new Error('Submission failed');

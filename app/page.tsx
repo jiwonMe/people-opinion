@@ -22,16 +22,14 @@ const OpinionCounts = dynamic(() => import('@/components/OpinionCounts'), {
   ssr: false,
 });
 
+const UserIdInitializer = dynamic(() => import('@/components/UserIdInitializer'), {
+  ssr: false,
+});
+
 export default function Home() {
   return (
     <main className="container mx-auto min-h-[100dvh] flex flex-col items-center justify-center max-h-screen max-w-[500px]">
-      <div className={cn(
-        "fixed top-0 left-0 right-0",
-        "bg-black text-white text-sm text-center py-2",
-        "z-50"
-      )}>
-        개발중인 사이트로 현재 작성된 데이터는 실제 반영되지 않습니다
-      </div>
+      <UserIdInitializer />
       <div className="container mx-auto px-4 py-8 flex flex-col items-center flex-grow">
         <div className="absolute top-1/4 flex flex-col justify-center">
           {/* <VSpace size="10%" /> */}
@@ -85,7 +83,7 @@ export default function Home() {
           <CTAButton className='h-16 font-bold text-lg rounded-full bg-black hover:bg-black/70 fixed bottom-[10vh] left-4 right-4 w-9/12 min-w-[230px] border-2 border-white ring-2 ring-black'>
           {/* send icon */}
           <PencilLine color='white' size={24} className='mr-2'/>
-          지금 의견 보내기
+          지금 바로 의견 보내기
           </CTAButton>
         </Link>
         <div className='text-white text-xs text-center bg-black/50 rounded-tl-xl px-4 py-2'>
