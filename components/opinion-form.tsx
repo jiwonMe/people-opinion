@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Input } from './ui/input';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, forwardRef } from 'react';
 
 const OTHER = '직접 입력';
 
@@ -57,7 +57,7 @@ export const yourOpinionFormSchema = z.object({
 
 export type OpinionFormData = z.infer<typeof yourOpinionFormSchema>;
 
-export const OpinionForm = ({ form, onSubmit, id }: { form: UseFormReturn<OpinionFormData>, onSubmit: (values: OpinionFormData) => void, id: string }) => {
+export const OpinionForm = forwardRef(({ form, onSubmit, id }: { form: UseFormReturn<OpinionFormData>, onSubmit: (values: OpinionFormData) => void, id: string }, ref) => {
   const [shuffledWannabeOptions, setShuffledWannabeOptions] = useState<{ value: string; text: string }[]>([]);
   const [shuffledReasonOptions, setShuffledReasonOptions] = useState<{ value: string; text: string }[]>([]);
 
@@ -155,4 +155,4 @@ export const OpinionForm = ({ form, onSubmit, id }: { form: UseFormReturn<Opinio
       </div>
     </Form>
   );
-}
+});

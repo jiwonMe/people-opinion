@@ -23,6 +23,7 @@ import {
 import { Checkbox } from './ui/checkbox';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from './ui/input-otp';
 import { VSpace } from './ui/vspace';
+import { forwardRef } from 'react';
 
 export const personalInformationFormSchema = z.object({
   name: z.string().min(2, '이름은 최소 2글자 이상이어야 합니다.'),
@@ -55,7 +56,7 @@ export const personalInformationFormSchema = z.object({
 
 export type UserFormData = z.infer<typeof personalInformationFormSchema>;
 
-export const UserForm = ({ form, onSubmit, id }: { form: UseFormReturn<UserFormData>, onSubmit: (values: UserFormData) => void, id: string }) => {
+export const UserForm = forwardRef(({ form, onSubmit, id }: { form: UseFormReturn<UserFormData>, onSubmit: (values: UserFormData) => void, id: string }, ref) => {
   const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
     event.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
   };
@@ -268,4 +269,4 @@ export const UserForm = ({ form, onSubmit, id }: { form: UseFormReturn<UserFormD
       <VSpace size={60} />
     </Form>
   );
-}
+});

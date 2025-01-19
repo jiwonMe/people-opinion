@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { forwardRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useToast } from '@/components/ui/use-toast';
@@ -31,7 +31,7 @@ export const reviewSubmitFormSchema = z.object({
 
 export type ReviewSubmitFormData = z.infer<typeof reviewSubmitFormSchema>;
 
-export function ReviewForm({ form, onSubmit, id, context }: { form: UseFormReturn<ReviewSubmitFormData>, onSubmit: (values: ReviewSubmitFormData) => Promise<void>, id: string, context: ReviewSubmitFormData }) {
+export const ReviewForm = forwardRef(({ form, onSubmit, id, context }: { form: UseFormReturn<ReviewSubmitFormData>, onSubmit: (values: ReviewSubmitFormData) => Promise<void>, id: string, context: ReviewSubmitFormData }, ref) => {
   const router = useRouter();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -178,4 +178,4 @@ export function ReviewForm({ form, onSubmit, id, context }: { form: UseFormRetur
       </Drawer> */}
     </div>
   );
-}
+});

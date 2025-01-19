@@ -131,6 +131,14 @@ export default function SubmitPage() {
   const [showScrollHint, setShowScrollHint] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // form ref들을 추가
+  const formRefs = {
+    'personal-information': useRef<HTMLFormElement>(null),
+    'your-opinion': useRef<HTMLFormElement>(null),
+    'review-generated': useRef<HTMLFormElement>(null),
+    'review-submit': useRef<HTMLFormElement>(null),
+  };
+
   useEffect(() => {
     // Container가 있을 경우 스크롤을 최상단으로 이동
     if (containerRef.current) {
@@ -171,6 +179,14 @@ export default function SubmitPage() {
     return () => container.removeEventListener('scroll', handleScroll);
   }, [debug, page, funnel.history, funnel.context]);
 
+  useEffect(() => {
+    // 현재 step의 form이 있을 경우 해당 form으로 scroll
+    const currentForm = formRefs[funnel.step]?.current;
+    if (currentForm) {
+      currentForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [funnel.step]); // funnel.step이 변경될 때마다 실행
+
   
 
   return (
@@ -192,6 +208,7 @@ export default function SubmitPage() {
           personal-information={({ context, history, step }) => {
             return (
             <UserForm
+            ref={formRefs['personal-information']}
             id={`${step}-form`}
             form={userForm}
             onSubmit={(values: UserFormData) => {
@@ -207,6 +224,7 @@ export default function SubmitPage() {
           your-opinion={({ context, history, step }) => {
             return (
               <OpinionForm
+              ref={formRefs['your-opinion']}
               id={`${step}-form`}
               form={opinionForm}
               onSubmit={(values: OpinionFormData) => {
@@ -222,6 +240,7 @@ export default function SubmitPage() {
           review-generated={({ context, history, step }) => {
             return (
               <ReviewGeneratedForm
+              ref={formRefs['review-generated']}
               id={`${step}-form`}
               form={reviewGeneratedForm}
               onSubmit={(values: ReviewGeneratedFormData) => {
@@ -237,6 +256,7 @@ export default function SubmitPage() {
           review-submit={({ context, history, step }) => {
             return (
               <ReviewForm
+              ref={formRefs['review-submit']}
               id={`${step}-form`}
               form={reviewForm}
               context={context}

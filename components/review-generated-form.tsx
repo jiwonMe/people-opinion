@@ -4,7 +4,7 @@ import { useForm, UseFormReturn } from 'react-hook-form';
 import * as z from 'zod';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from './ui/form';
 import { Textarea } from './ui/textarea';
-import { useEffect, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import { generateOpinion } from './generateOpinion';
 import { cn } from '@/lib/utils';
 
@@ -14,7 +14,7 @@ export const reviewGeneratedFormSchema = z.object({
 
 export type ReviewGeneratedFormData = z.infer<typeof reviewGeneratedFormSchema>;
 
-export const ReviewGeneratedForm = ({ form, onSubmit, id, context }: { form: UseFormReturn<ReviewGeneratedFormData>, onSubmit: (values: ReviewGeneratedFormData) => void, id: string, context: {
+export const ReviewGeneratedForm = forwardRef(({ form, onSubmit, id, context }: { form: UseFormReturn<ReviewGeneratedFormData>, onSubmit: (values: ReviewGeneratedFormData) => void, id: string, context: {
   wannabe: string;
   reason: string;
   name: string;
@@ -130,4 +130,4 @@ export const ReviewGeneratedForm = ({ form, onSubmit, id, context }: { form: Use
   ) : (
     <div>Error</div>
   ))
-}
+});
