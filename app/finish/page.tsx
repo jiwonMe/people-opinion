@@ -114,23 +114,6 @@ export default function FinishPage() {
     }
   };
 
-  /**
-   * @description Instagram Story로 공유하는 함수
-   */
-  const handleInstagramShare = () => {
-    // Instagram story 공유를 위한 기본 파라미터
-    const params = {
-      source_application: 'attack.valid.or.kr',
-      text: '탄핵 촉구 의견서 제출 완료! 더 많은 시민들과 함께해요',
-      link: 'https://attack.valid.or.kr',
-    };
-
-    // URL 인코딩된 파라미터로 Instagram 스토리 URL 생성
-    const instagramURL = `instagram-stories://share?${new URLSearchParams(params).toString()}`;
-
-    // Instagram 앱으로 이동
-    window.location.href = instagramURL;
-  };
 
   return (
     <div className="container mx-auto flex min-h-screen flex-col items-center bg-white px-4">
@@ -200,10 +183,20 @@ export default function FinishPage() {
           <CTAButton 
             onClick={handleShare}
             className="w-full rounded-xl bg-[#2563EB] hover:bg-[#2563EB]/80 py-4 text-white"
-            >
+          >
             외부로 공유하기
-            </CTAButton>
-          <VSpace size={120} />   
+          </CTAButton>
+
+          <VSpace size={40} />
+          
+          <Link href="https://www.instagram.com/valid.kr/" target="_blank" rel="noopener noreferrer">
+            
+          <div className=" text-gray-500 text-sm underline">
+            기획: [VALID] 전진하는 민주주의
+          </div>
+            
+          </Link>
+          <VSpace size={40} />   
         </div>
       </div>
     </div>

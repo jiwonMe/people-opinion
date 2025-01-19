@@ -87,7 +87,13 @@ export default function Home() {
           </CTAButton>
         </Link>
         <div className='text-white text-xs text-center bg-black/50 rounded-tl-xl px-4 py-2'>
-          <Image src="/assets/images/valid-logo-white.svg" alt="전진하는 민주주의 VALID" width={62} height={24} />
+          <Link 
+            href="https://www.instagram.com/valid.kr/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+          >
+            <Image src="/assets/images/valid-logo-white.svg" alt="전진하는 민주주의 VALID" width={62} height={24} />
+          </Link>
         </div>
       </div>
       <VSpace className="w-full flex flex-col items-center justify-start" size={60} />
