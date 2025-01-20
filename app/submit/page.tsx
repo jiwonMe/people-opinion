@@ -19,6 +19,7 @@ import { Toast, ToastProvider } from '@/components/ui/toast';
 import { Toaster } from '@/components/ui/toaster';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { Dialog, DialogContent, DialogFooter } from '@/components/ui/dialog';
 // Add dynamic rendering configuration
 export const dynamic = 'force-dynamic';
 
@@ -139,6 +140,8 @@ export default function SubmitPage() {
     'review-submit': useRef<HTMLFormElement>(null),
   };
 
+  const [showIntroDialog, setShowIntroDialog] = useState(true);
+
   useEffect(() => {
     // Container가 있을 경우 스크롤을 최상단으로 이동
     if (containerRef.current) {
@@ -203,7 +206,40 @@ export default function SubmitPage() {
 
   return (
     <>
-    <Toaster /> 
+      <Dialog open={showIntroDialog} onOpenChange={setShowIntroDialog}>
+        <DialogContent className="max-w-[400px] rounded-[20px] p-6">
+          <div className="space-y-4">
+            <h2 className="text-lg font-bold">프로젝트 소개</h2>
+            <div className="text-base leading-relaxed">
+              <p className="mb-4" style={{ textIndent: '1em' }}>
+                <strong>12·3 비상계엄 사태</strong>가 촉발한 혼돈의 정국이 길어지고 있습니다. 
+                시민들은 소중한 일상을 뺏겼고, 사회적 불안과 분열이 거듭되고 있으며, 
+                경제 지표는 나날이 추락하고, 정치적 불확실성 속 소모적인 갈등은 끊이질 않습니다. 
+                하루라도 빨리 이 모든 사태에 가담한 이들을 <strong>마땅히 처벌</strong>하고, 
+                혼돈을 바로 잡아 이 다음으로 나아가야 합니다.
+              </p>
+              <p className="mb-4" style={{ textIndent: '1em' }}>
+                <strong>전진하는민주주의 VALID</strong>는 앞으로 <strong>3주 동안 </strong> 
+                더 이상의 민주주의 퇴보를 용납할 수 없는 시민들의 목소리를 모아 헌법재판소로 전달합니다.
+              </p>
+              <p className="mb-4" style={{ textIndent: '1em' }}>
+                <strong>15초</strong>만 내면 누구나 <strong>윤석열 즉각 탄핵과 파면</strong>을 촉구하는 
+                의견서를 쉽고 편하게 생성해 함께 참여할 수 있어요. 지금 바로 여러분의 화력을 보태주세요!
+              </p>
+            </div>
+          </div>
+          <DialogFooter>
+            <CTAButton 
+              onClick={() => setShowIntroDialog(false)}
+              className="w-full bg-black text-white hover:bg-black/90"
+            >
+              오케이! 가보자고 →
+            </CTAButton>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      
+      <Toaster /> 
     {/* <VSpace className='h-10'></VSpace> */}
     <div className='container relative mx-auto flex flex-col flex-grow h-full overflow-y-auto' ref={containerRef}>
       <div className='flex flex-col sticky top-0 left-0 right-0 px-4 py-4 pt-8 bg-gradient-to-b from-white from-80% to-white/0 w-full z-50'>
