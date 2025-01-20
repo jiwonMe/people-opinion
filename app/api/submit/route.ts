@@ -25,11 +25,13 @@ export async function POST(request: Request) {
       data.gender,
       data.birth,
       data.address,
+      data.email,
+      data.phone,
     ];
 
     await sheets.spreadsheets.values.append({
       spreadsheetId: process.env.SHEET_ID,
-      range: 'A3:J',
+      range: 'A3:L',
       valueInputOption: 'RAW',
       requestBody: {
         values: [row],
