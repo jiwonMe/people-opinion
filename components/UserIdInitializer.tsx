@@ -13,6 +13,15 @@ const UserIdInitializer = () => {
       const userId = uuidv4();
       sessionStorage.setItem('userId', userId);
     }
+
+    // URL에서 ref parameter 확인
+    const urlParams = new URLSearchParams(window.location.search);
+    const refParam = urlParams.get('ref');
+    
+    // ref parameter가 있는 경우 referral 저장
+    if (refParam) {
+      sessionStorage.setItem('referral', refParam);
+    }
   }, []);
 
   return null;

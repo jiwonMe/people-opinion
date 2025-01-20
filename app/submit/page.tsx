@@ -321,6 +321,7 @@ export default function SubmitPage() {
                     body: JSON.stringify({
                       ...context,
                       sessionId: sessionStorage.getItem('userId'),
+                      referral: sessionStorage.getItem('referral'),
                     }),
                   });
 
