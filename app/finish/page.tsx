@@ -212,7 +212,11 @@ export default function FinishPage() {
           <div className=" text-gray-500 text-sm underline">
             기획: [VALID] 전진하는 민주주의
           </div>
-            
+          </Link>
+          <Link href="https://www.instagram.com/jiwon.me/" target="_blank" rel="noopener noreferrer">
+          <div className=" text-gray-500 text-sm underline">
+            개발: 박지원(@jiwon.me)
+          </div>
           </Link>
           <VSpace size={40} />   
         </div>
