@@ -204,6 +204,9 @@ export default function FinishPage() {
           >
             외부로 공유하기
           </CTAButton>
+          <div className="text-xs text-gray-500 text-center">
+            * 카카오톡으로도 공유할 수 있어요
+          </div>
 
           <VSpace size={40} />
           
