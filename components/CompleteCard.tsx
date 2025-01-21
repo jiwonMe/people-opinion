@@ -70,7 +70,7 @@ const CompleteCard = ({ name, index, className }: CompleteCardProps) => {
 
       // 상단 흰색 배경 (위쪽 2/3)
       ctx.fillStyle = '#FFFFFF';
-      ctx.fillRect(0, 0, BASE_WIDTH, BASE_HEIGHT * 0.67);
+      ctx.fillRect(0, 0, BASE_WIDTH, BASE_HEIGHT * 0.8);
 
       // 하단 검정색 배경 (아래쪽 1/5)
       ctx.fillStyle = '#000000';
