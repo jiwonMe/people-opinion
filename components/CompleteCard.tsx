@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface CompleteCardProps {
   name: string;
@@ -8,11 +8,12 @@ interface CompleteCardProps {
 }
 
 /**
- * Canvas를 사용하여 완료 카드를 렌더링하는 컴포넌트
+ * Canvas를 사용하여 완료 카드를 생성하고 이미지로 표시하는 컴포넌트
  * @param props - CompleteCard props
- * @returns Canvas element
+ * @returns Image element
  */
 const CompleteCard = ({ name, index, className }: CompleteCardProps) => {
+  const [imageUrl, setImageUrl] = useState<string>('');
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -131,15 +132,25 @@ const CompleteCard = ({ name, index, className }: CompleteCardProps) => {
 
       // Background image 렌더링
       ctx.drawImage(bgImage, 0, BASE_HEIGHT - 209, BASE_WIDTH, 169);
+
+      // Canvas를 base64 image URL로 변환
+      const dataUrl = canvas.toDataURL('image/png');
+      setImageUrl(dataUrl);
     });
   }, [name, index]);
 
   return (
-    <canvas 
-      ref={canvasRef}
-      className={cn("aspect-[4/5] relative select-none w-[512px]", className)}
-    //   style={{ width: '512px', height: '640px' }}
-    />
+    <>
+      <canvas 
+        ref={canvasRef}
+        className="hidden" // Canvas는 숨김 처리
+      />
+      <img 
+        src={imageUrl}
+        alt={`${name}님의 완료 카드`}
+        className={cn("aspect-[4/5] relative select-none w-[512px]", className)}
+      />
+    </>
   );
 };
 
