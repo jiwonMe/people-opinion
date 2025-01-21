@@ -253,6 +253,13 @@ export const UserForm = forwardRef<
           )}
         />
 
+        <div className="text-sm bg-gray-200 rounded-xl px-6 py-4 mt-4">
+          <p>￭ 수집 항목 : 이름, 휴대폰번호, 이메일, 주소</p>
+          <p>￭ 수집·이용 목적 : 헌법재판소 국민참여의견서 작성 및 전달, 후속 활동 소식 공유 등</p>
+          <p>￭ 보유·이용기간 : 목적이 다했거나 귀하가 이용 중단의사를 밝힐 경우 파기함</p>
+          <p>￭ 제공하는 3자: 헌법재판소</p>
+        </div>
+
         <FormField
           control={form.control}
           name="personalAgreement"
