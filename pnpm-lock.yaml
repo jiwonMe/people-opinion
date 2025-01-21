@@ -107,6 +107,9 @@ importers:
       '@use-funnel/browser':
         specifier: ^0.0.10
         version: 0.0.10(react@18.2.0)
+      '@vercel/analytics':
+        specifier: ^1.4.1
+        version: 1.4.1(next@13.5.1(@opentelemetry/api@1.9.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react@18.2.0)
       ai:
         specifier: ^4.0.22
         version: 4.1.0(react@18.2.0)(zod@3.24.1)
@@ -1128,6 +1131,32 @@ packages:
     resolution: {integrity: sha512-/hqHwxH9EADJX3d+qA7LNdpavnY6jNd0XW64s85k4gc3ImG6wASxE00TEB96oYUU1wNucrL0n/8FD8XHivKHtQ==}
     peerDependencies:
       react: '>=16.8'
+
+  '@vercel/analytics@1.4.1':
+    resolution: {integrity: sha512-ekpL4ReX2TH3LnrRZTUKjHHNpNy9S1I7QmS+g/RQXoSUQ8ienzosuX7T9djZ/s8zPhBx1mpHP/Rw5875N+zQIQ==}
+    peerDependencies:
+      '@remix-run/react': ^2
+      '@sveltejs/kit': ^1 || ^2
+      next: '>= 13'
+      react: ^18 || ^19 || ^19.0.0-rc
+      svelte: '>= 4'
+      vue: ^3
+      vue-router: ^4
+    peerDependenciesMeta:
+      '@remix-run/react':
+        optional: true
+      '@sveltejs/kit':
+        optional: true
+      next:
+        optional: true
+      react:
+        optional: true
+      svelte:
+        optional: true
+      vue:
+        optional: true
+      vue-router:
+        optional: true
 
   abort-controller@3.0.0:
     resolution: {integrity: sha512-h8lQ8tacZYnR3vNQTgibj+tODHI5/+l06Au2Pcriv/Gmet0eaj4TwWH41sO9wnHDiQsEj19q0drzdWdeAHtweg==}
@@ -3922,6 +3951,11 @@ snapshots:
 
   '@use-funnel/core@0.0.8(react@18.2.0)':
     dependencies:
+      react: 18.2.0
+
+  '@vercel/analytics@1.4.1(next@13.5.1(@opentelemetry/api@1.9.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react@18.2.0)':
+    optionalDependencies:
+      next: 13.5.1(@opentelemetry/api@1.9.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react: 18.2.0
 
   abort-controller@3.0.0:
