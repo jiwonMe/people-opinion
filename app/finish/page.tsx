@@ -15,7 +15,8 @@ import { Send } from 'lucide-react'
 export default function FinishPage() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<{ name: string; index: number } | null>(null);
-  const [showTooltip, setShowTooltip] = useState(false);
+  const [showLinkTooltip, setShowLinkTooltip] = useState(false);
+  const [showTextTooltip, setShowTextTooltip] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -83,8 +84,9 @@ export default function FinishPage() {
       const userId = sessionStorage.getItem('userId');
       const shareLink = `https://attack.valid.or.kr?ref=${userId || ''}`;
       await navigator.clipboard.writeText(shareLink);
-      setShowTooltip(true);
-      setTimeout(() => setShowTooltip(false), 2000);
+      setShowLinkTooltip(true);
+      setShowTextTooltip(false);
+      setTimeout(() => setShowLinkTooltip(false), 2000);
     } catch (error) {
       console.error('링크 복사 중 오류 발생:', error);
     }
@@ -132,6 +134,20 @@ export default function FinishPage() {
     }
   };
 
+  /**
+   * @description SNS 인증용 텍스트를 클립보드에 복사하는 함수
+   */
+  const handleCopyText = async () => {
+    try {
+      const text = '#피청구인_윤석열을_파면하라\n#탄핵촉구의견서\n#전진하는민주주의';
+      await navigator.clipboard.writeText(text);
+      setShowTextTooltip(true);
+      setShowLinkTooltip(false);
+      setTimeout(() => setShowTextTooltip(false), 2000);
+    } catch (error) {
+      console.error('텍스트 복사 중 오류 발생:', error);
+    }
+  };
 
   return (
     <div className="container mx-auto flex min-h-screen flex-col items-center bg-white px-4">
@@ -179,6 +195,13 @@ export default function FinishPage() {
               </div>
             )
           )}
+
+          <VSpace size={20} />
+
+          <div className="text-gray-600">
+          더 많은 시민들이 함께할 수 있도록 <br />
+SNS에 참여를 인증해주세요!
+          </div>
           
           <p className="font-bold">참여링크 복사</p>
           <div 
@@ -191,7 +214,25 @@ export default function FinishPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
               </svg>
             </button>
-            {showTooltip && (
+            {showLinkTooltip && (
+              <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-3 py-1 rounded text-sm">
+                복사되었습니다
+              </div>
+            )}
+          </div>
+
+          <p className="font-bold">SNS 인증용 텍스트 복사</p>
+          <div 
+            onClick={handleCopyText}
+            className="relative flex w-full items-center rounded-xl bg-gray-100 p-4 cursor-pointer hover:bg-gray-200 transition-colors"
+          >
+            <span className="flex-1 text-gray-700">#피청구인_윤석열을_파면하라<br />#탄핵촉구의견서<br />#전진하는민주주의</span>
+            <button className="absolute right-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+            </button>
+            {showTextTooltip && (
               <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white px-3 py-1 rounded text-sm">
                 복사되었습니다
               </div>
