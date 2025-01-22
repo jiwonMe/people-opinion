@@ -176,6 +176,21 @@ export default function FinishPage() {
     setIsEditingName(false);
   };
 
+  /**
+   * @description 트위터(X)로 공유하는 함수
+   */
+  const handleTwitterShare = () => {
+    const userId = localStorage.getItem('userId');
+    const userName = data?.name || '';
+    const totalCount = data?.index?.toLocaleString() || '0';
+    
+    const shareText = encodeURIComponent(
+      `${userName}님은 ${totalCount}명과 함께 헌법재판소에 요구하는 중!\n\n더 많은 시민들과 함께 헌법재판소의 문을 두드려요!\n\n#피청구인_윤석열을_파면하라\n#탄핵촉구의견서\n#전진하는민주주의\n\n`
+    );
+    const shareUrl = encodeURIComponent(`https://attack.valid.or.kr?ref=${userId || ''}`);
+    window.open(`https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`, '_blank');
+  };
+
   return (
     <div className="container mx-auto flex min-h-screen flex-col items-center bg-white px-4">
       <div className='flex flex-col sticky top-0 left-0 right-0 px-4 py-4 pt-8 bg-gradient-to-b from-white from-80% to-white/0 w-full z-50'>
@@ -298,9 +313,13 @@ SNS에 참여를 인증해주세요!
           >
             외부로 공유하기
           </CTAButton>
-          <div className="text-xs text-gray-500 text-center">
-            * 카카오톡으로도 공유할 수 있어요
-          </div>
+          <CTAButton 
+            onClick={handleTwitterShare}
+            className="w-full rounded-xl bg-black hover:bg-gray-800 py-4 text-white"
+          >
+            X(트위터)로 빠르게 공유하기
+          </CTAButton>
+          
 
           <VSpace size={40} />
           
