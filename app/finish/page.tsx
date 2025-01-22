@@ -185,7 +185,7 @@ export default function FinishPage() {
     const totalCount = data?.index?.toLocaleString() || '0';
     
     const shareText = encodeURIComponent(
-      `${userName}님은 ${totalCount}명과 함께 헌법재판소에 요구하는 중!\n\n더 많은 시민들과 함께 헌법재판소의 문을 두드려요!\n\n#피청구인_윤석열을_파면하라\n#탄핵촉구의견서\n#전진하는민주주의\n\n`
+      `${userName}님은 ${totalCount}명과 함께 헌법재판소에 요구하는 중!\n\n더 많은 시민들과 함께 헌법재판소의 문을 두드려요!\n\n#피청구인_윤석열을_파면하라\n#탄핵촉구의견서\n#전진하는민주주의\n\n@VALID_kr\n\n`
     );
     const shareUrl = encodeURIComponent(`https://attack.valid.or.kr?ref=${userId || ''}`);
     window.open(`https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`, '_blank');
