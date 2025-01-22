@@ -141,6 +141,7 @@ export default function SubmitPage() {
   };
 
   const [showIntroDialog, setShowIntroDialog] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     // Container가 있을 경우 스크롤을 최상단으로 이동
@@ -310,6 +311,7 @@ export default function SubmitPage() {
               context={context}
               onSubmit={async (values: ReviewSubmitFormData) => {
                 try {
+                  setIsSubmitting(true);
                   // session storage에 제출 데이터 저장
                   sessionStorage.setItem('submittedData', JSON.stringify(context));
 
@@ -333,6 +335,8 @@ export default function SubmitPage() {
                 } catch (error) {
                   console.error('Submit error:', error);
                   throw error;
+                } finally {
+                  setIsSubmitting(false);
                 }
               }}
               />
@@ -367,7 +371,7 @@ export default function SubmitPage() {
         )
       }
       <CTAButton type="submit" form={`${funnel.step}-form`}
-          disabled={funnel.step === 'personal-information' && !userForm.formState.errors}
+          disabled={isSubmitting || (funnel.step === 'personal-information' && !userForm.formState.errors)}
           className={cn(
             'pointer-events-auto user-select-auto',
             funnel.step === 'review-submit' && 'bg-[#00FF59] hover:bg-[#00FF59]/90 text-black text-lg font-bold',

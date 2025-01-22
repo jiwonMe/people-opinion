@@ -5,7 +5,8 @@ export const dynamic = 'force-dynamic';
 
 // Cache object to store fetched data
 let cache: { data: any; timestamp: number } | null = null;
-const CACHE_DURATION = 5 * 60 * 1000; // Cache duration in milliseconds (e.g., 5 minutes)
+// const CACHE_DURATION = 5 * 60 * 1000; // Cache duration in milliseconds (e.g., 5 minutes)
+const CACHE_DURATION = 0
 
 export async function GET(request: Request) {
   try {

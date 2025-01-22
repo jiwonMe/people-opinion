@@ -27,7 +27,7 @@ export async function POST(request: Request) {
       data.address,
       data.email,
       data.phone,
-      data.referrer,
+      data.referral,
     ];
 
     await sheets.spreadsheets.values.append({
