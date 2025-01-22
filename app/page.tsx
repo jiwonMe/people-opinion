@@ -86,7 +86,7 @@ export default function Home() {
           지금 바로 의견 보내기
           </CTAButton>
         </Link>
-        <Link href="/finish" className='font-bold text-sm text-gray-500 underline fixed bottom-[calc(10vh-32px)] left-1/2 -translate-x-1/2'>
+        <Link href="/finish" className='font-bold text-sm text-black underline bg-white/50 px-4 fixed bottom-[calc(10vh-32px)] left-1/2 -translate-x-1/2'>
             내 카드 다시 확인하기
         </Link>
         <div className='text-white text-xs text-center bg-black/50 rounded-tl-xl px-4 py-2'>
