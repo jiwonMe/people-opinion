@@ -11,6 +11,7 @@ import { useState, useEffect, useRef } from 'react'
 import { VSpace } from '@/components/ui/vspace'
 import { v4 as uuidv4 } from 'uuid'
 import { Send } from 'lucide-react'
+import { Input } from '@/components/ui/input'
 
 export default function FinishPage() {
   const [loading, setLoading] = useState(true);
@@ -18,6 +19,8 @@ export default function FinishPage() {
   const [showLinkTooltip, setShowLinkTooltip] = useState(false);
   const [showTextTooltip, setShowTextTooltip] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [editedName, setEditedName] = useState('');
 
   useEffect(() => {
     const submittedData = localStorage.getItem('submittedData');
@@ -149,6 +152,30 @@ export default function FinishPage() {
     }
   };
 
+  /**
+   * @description 이름을 수정하고 localStorage에 저장하는 함수
+   */
+  const handleNameEdit = () => {
+    if (!isEditingName) {
+      setEditedName(data?.name || '');
+      setIsEditingName(true);
+      return;
+    }
+
+    const trimmedName = editedName.trim();
+    if (!trimmedName) return;
+
+    const submittedData = localStorage.getItem('submittedData');
+    if (submittedData) {
+      const userData = JSON.parse(submittedData);
+      userData.name = trimmedName;
+      localStorage.setItem('submittedData', JSON.stringify(userData));
+    }
+
+    setData(prev => prev ? { ...prev, name: trimmedName } : null);
+    setIsEditingName(false);
+  };
+
   return (
     <div className="container mx-auto flex min-h-screen flex-col items-center bg-white px-4">
       <div className='flex flex-col sticky top-0 left-0 right-0 px-4 py-4 pt-8 bg-gradient-to-b from-white from-80% to-white/0 w-full z-50'>
@@ -180,20 +207,43 @@ export default function FinishPage() {
           ) : (
             data && (
               <div className="w-full flex flex-col items-center justify-center">
+                <div className="text-sm text-gray-500 text-center mb-4">
+                    꾹 눌러서 이미지로 저장하기!
+                  </div>
                 <div ref={cardRef} className="mx-auto">
                   <CompleteCard name={data.name} index={Number(data.index)} className="w-full max-w-[300px] aspect-[4/5] rounded-xl shadow-xl border-gray-100 border"/>
                 </div>
                 <div className="flex flex-col w-full gap-2 mt-4">
-                    <div className="text-sm text-gray-500 text-center">
-                        꾹 눌러서 이미지로 저장하기!
+                  {isEditingName ? (
+                    <div className="flex gap-2">
+                      <Input
+                        value={editedName}
+                        onChange={(e) => setEditedName(e.target.value)}
+                        placeholder="닉네임을 입력하세요"
+                        className="flex-1"
+                        maxLength={10}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            handleNameEdit();
+                          }
+                        }}
+                      />
+                      <button
+                        onClick={handleNameEdit}
+                        className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
+                      >
+                        확인
+                      </button>
                     </div>
-                  {/* <CTAButton 
-                    onClick={handleSaveImage}
-                    className="w-full rounded-xl bg-[#0B1A45] py-4 text-white"
-                  >
-                    이미지로 저장하기
-                  </CTAButton> */}
-                 
+                  ) : (
+                    <button
+                      onClick={handleNameEdit}
+                      className="text-sm text-gray-500 hover:text-gray-700 underline"
+                    >
+                      다른 이름으로 수정하기
+                    </button>
+                  )}
+                  
                 </div>
               </div>
             )
