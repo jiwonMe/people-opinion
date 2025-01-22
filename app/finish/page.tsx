@@ -168,12 +168,15 @@ export default function FinishPage() {
                   <CompleteCard name={data.name} index={Number(data.index)} className="w-full max-w-[300px] aspect-[4/5] rounded-xl shadow-xl border-gray-100 border"/>
                 </div>
                 <div className="flex flex-col w-full gap-2 mt-4">
-                  <CTAButton 
+                    <div className="text-sm text-gray-500 text-center">
+                        꾹 눌러서 이미지로 저장하기!
+                    </div>
+                  {/* <CTAButton 
                     onClick={handleSaveImage}
                     className="w-full rounded-xl bg-[#0B1A45] py-4 text-white"
                   >
                     이미지로 저장하기
-                  </CTAButton>
+                  </CTAButton> */}
                  
                 </div>
               </div>
