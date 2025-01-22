@@ -20,10 +20,10 @@ export default function FinishPage() {
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const submittedData = sessionStorage.getItem('submittedData');
+    const submittedData = localStorage.getItem('submittedData');
     const userData = submittedData ? JSON.parse(submittedData) : null;
-    const savedSubmitNumber = sessionStorage.getItem('submitNumber');
-    const savedDataHash = sessionStorage.getItem('dataHash');
+    const savedSubmitNumber = localStorage.getItem('submitNumber');
+    const savedDataHash = localStorage.getItem('dataHash');
     
     // data의 hash 값 생성 - encodeURIComponent 추가
     const currentDataHash = userData ? btoa(encodeURIComponent(JSON.stringify(userData))) : '';
@@ -42,8 +42,8 @@ export default function FinishPage() {
     fetch('/api/opinions?onlyCount=true')
       .then(response => response.json())
       .then(responseData => {
-        sessionStorage.setItem('submitNumber', responseData.totalCount.toString());
-        sessionStorage.setItem('dataHash', currentDataHash);
+        localStorage.setItem('submitNumber', responseData.totalCount.toString());
+        localStorage.setItem('dataHash', currentDataHash);
         setData({
           name: userData?.name || "익명의 시민",
           index: responseData.totalCount
@@ -81,7 +81,7 @@ export default function FinishPage() {
    */
   const handleCopyLink = async () => {
     try {
-      const userId = sessionStorage.getItem('userId');
+      const userId = localStorage.getItem('userId');
       const shareLink = `https://attack.valid.or.kr?ref=${userId || ''}`;
       await navigator.clipboard.writeText(shareLink);
       setShowLinkTooltip(true);
@@ -117,7 +117,7 @@ export default function FinishPage() {
         return;
       }
 
-      const userId = sessionStorage.getItem('userId');
+      const userId = localStorage.getItem('userId');
       const shareData = {
         title: '탄핵 촉구 의견서 제출 완료',
         text: `저는 방금 탄핵 촉구 의견서를 제출했습니다. 더 많은 시민들과 함께 헌법재판소의 문을 두드려요! \n\n 참여링크: https://attack.valid.or.kr?ref=${userId || ''}`,

@@ -313,7 +313,7 @@ export default function SubmitPage() {
                 try {
                   setIsSubmitting(true);
                   // session storage에 제출 데이터 저장
-                  sessionStorage.setItem('submittedData', JSON.stringify(context));
+                  localStorage.setItem('submittedData', JSON.stringify(context));
 
                   const response = await fetch('/api/submit', {
                     method: 'POST',
@@ -322,8 +322,8 @@ export default function SubmitPage() {
                     },
                     body: JSON.stringify({
                       ...context,
-                      sessionId: sessionStorage.getItem('userId'),
-                      referral: sessionStorage.getItem('referral'),
+                      sessionId: localStorage.getItem('userId'),
+                      referral: localStorage.getItem('referral'),
                     }),
                   });
 

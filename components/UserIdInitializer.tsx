@@ -9,9 +9,9 @@ import { v4 as uuidv4 } from 'uuid';
 const UserIdInitializer = () => {
   useEffect(() => {
     // session storage에 user id가 없는 경우에만 생성
-    if (!sessionStorage.getItem('userId')) {
+    if (!localStorage.getItem('userId')) {
       const userId = uuidv4();
-      sessionStorage.setItem('userId', userId);
+      localStorage.setItem('userId', userId);
     }
 
     // URL에서 ref parameter 확인
@@ -20,7 +20,7 @@ const UserIdInitializer = () => {
     
     // ref parameter가 있는 경우 referral 저장
     if (refParam) {
-      sessionStorage.setItem('referral', refParam);
+      localStorage.setItem('referral', refParam);
     }
   }, []);
 

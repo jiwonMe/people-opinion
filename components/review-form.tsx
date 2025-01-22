@@ -52,7 +52,7 @@ export const ReviewForm = forwardRef<
     try {
       const values = form.getValues();
       await onSubmit(values);
-      sessionStorage.setItem('submissionStatus', 'completed');
+      localStorage.setItem('submissionStatus', 'completed');
       toast({
         title: '제출 완료!',
         description: '제출이 완료되었습니다.',
