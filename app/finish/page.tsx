@@ -317,7 +317,7 @@ SNS에 참여를 인증해주세요!
             onClick={handleTwitterShare}
             className="w-full rounded-xl bg-black hover:bg-gray-800 py-4 text-white"
           >
-            X(트위터)로 빠르게 공유하기
+            트위터로 빠르게 공유하기
           </CTAButton>
           
 
