@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -82,6 +83,9 @@ export const UserForm = forwardRef<
           render={({ field }) => (
             <FormItem>
               <FormLabel>이름</FormLabel>
+              <FormDescription>
+                실명을 입력해주세요. 추후 공유는 닉네임으로 수정해서 할 수 있습니다!
+              </FormDescription>
               <FormControl>
                 <Input
                   placeholder="이름을 입력해주세요"
