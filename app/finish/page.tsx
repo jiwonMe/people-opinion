@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input'
 
 export default function FinishPage() {
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<{ name: string; index: number } | null>(null);
+  const [data, setData] = useState<{ name: string; index: number; wannabe: string } | null>(null);
   const [showLinkTooltip, setShowLinkTooltip] = useState(false);
   const [showTextTooltip, setShowTextTooltip] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -35,7 +35,8 @@ export default function FinishPage() {
     if (savedSubmitNumber && savedDataHash === currentDataHash) {
       setData({
         name: userData?.name || "익명의 시민",
-        index: parseInt(savedSubmitNumber)
+        index: parseInt(savedSubmitNumber),
+        wannabe: userData?.wannabe || ''
       });
       setLoading(false);
       return;
@@ -49,7 +50,8 @@ export default function FinishPage() {
         localStorage.setItem('dataHash', currentDataHash);
         setData({
           name: userData?.name || "익명의 시민",
-          index: responseData.totalCount
+          index: responseData.totalCount,
+          wannabe: userData?.wannabe || ''
         });
         setLoading(false);
       });
@@ -183,9 +185,10 @@ export default function FinishPage() {
     const userId = localStorage.getItem('userId');
     const userName = data?.name || '';
     const totalCount = data?.index?.toLocaleString() || '0';
+    const wannabe = data?.wannabe || '';
     
     const shareText = encodeURIComponent(
-      `${userName}님은 ${totalCount}명과 함께 헌법재판소에 요구하는 중!\n\n더 많은 시민들과 함께 헌법재판소의 문을 두드려요!\n\n#피청구인_윤석열을_파면하라\n#탄핵촉구의견서\n#전진하는민주주의\n\n@VALID_kr\n\n`
+      `${userName}님은 ${totalCount}명과 함께` + (wannabe ? `\n"${wannabe}"\n미래를 위해 ` : '') + `헌법재판소에 요구하는 중!\n\n더 많은 시민들과 함께 헌법재판소의 문을 두드려요!\n\n#피청구인_윤석열을_파면하라\n#탄핵촉구의견서\n#전진하는민주주의\n\n@VALID_kr\n\n`
     );
     const shareUrl = encodeURIComponent(`https://attack.valid.or.kr?ref=${userId || ''}`);
     window.open(`https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`, '_blank');
