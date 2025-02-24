@@ -44,7 +44,7 @@ export default function Home() {
               )}
             >
             내란범 윤석열의 신속 탄핵을 촉구하는 <br />
-            100만 시민의견 헌재 전달 프로젝트
+            시민의견 헌재 전달 프로젝트
             </p>
             <h1 className='w-[90%] relative'>
               <DrawingLine className="absolute top-[30%] left-[5%] stroke-[#00FF59]" delay={0.5} />
